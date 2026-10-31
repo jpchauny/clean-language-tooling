@@ -2,23 +2,23 @@
 
 **Prefix:** DSM
 
-**Audience:** The people who keep layer 2 of the Clean Language project; whoever builds or changes the use case `derive-semantics` of the plugin `clean-derived-norms`; the agents of layers 3 and 4, who read the semantics it derives
+**Audience:** The people who keep layer 2 of the Clean Language project; whoever builds or changes the meta use case `derive-semantics` of the plugin `clean-derived-norms`; the agents of layers 3 and 4, who read the semantics it derives
 
-**Scope:** The use case `/clean-derived-norms:derive-semantics`, the generator of the type `semantics`, which derives, from the norms of layer 2, one formal semantics of Clean in Lean 4: its abstract syntax, its typing and its evaluation ([LAY-3](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/development-methodology/specs/layers.md#rules)). It covers what the use case reads, what it writes, how the Lean code meets the parse tree of a fragment and of each file of its program, how it cites the norms, how it lists its derived norms, how it finds what to derive again, how it checks the semantics against the fragments and their expected output, and how a gap goes to layer 1 ([LAY-5](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/development-methodology/specs/layers.md#rules)). The interface that it follows as a generator, NRM-1 to NRM-15, is in norms-management, [NRM-1 to NRM-11](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/norms-management/specs/module.md#derive-the-derived-norms) and [NRM-12 to NRM-15](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/norms-management/specs/module.md#the-list-of-derived-norms), and what holds for every use case of its module, CDN-1 to CDN-10, is in [module.md](../../../specs/module.md#rules); neither is repeated here. Where this use case does what the use case `derive-grammar` does, its rule cites the rule of [derive-grammar.md](../../derive-grammar/specs/derive-grammar.md) (DGR) and states only what differs. The rules of the Clean examples, the expected output block among them, are in [clean-examples](../../../../clean-examples/specs/module.md); this use case does not check them ([CDN-4](../../../specs/module.md#rules)). Systems it works with: the grammar of `derive-grammar`, which parses each fragment; Lean 4 and its build tool Lake, which build and run the semantics; GitHub, through `gh`, for the issues. Out of scope: the grammar, which `derive-grammar` derives; the syntax errors of Clean (`expect=syntax-error`), which the grammar checks; the commit and the push of the output, which the build makes ([NRM-9](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/norms-management/specs/module.md#derive-the-derived-norms)); adding the type `semantics` to `derived_norms` of the project's `project.json`, a change of layer 1. The use case must never decide what the norms do not decide.
+**Scope:** The meta use case `/clean-derived-norms:derive-semantics`, the generator of the type `semantics`, which derives, from the norms of layer 2, one formal semantics of Clean in Lean 4: its abstract syntax, its typing and its evaluation ([LAY-3](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/development-methodology/specs/layers.md#rules)). It covers what the meta use case reads, what it writes, how the Lean code meets the parse tree of a fragment and of each file of its program, how it cites the norms, how it lists its derived norms, how it finds what to derive again, how it checks the semantics against the fragments and their expected output, and how a gap goes to layer 1 ([LAY-5](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/development-methodology/specs/layers.md#rules)). The interface that it follows as a generator, NRM-1 to NRM-15, is in norms-management, [NRM-1 to NRM-11](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/norms-management/specs/module.md#derive-the-derived-norms) and [NRM-12 to NRM-15](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/norms-management/specs/module.md#the-list-of-derived-norms), and what holds for every meta use case of its meta module, CDN-1 to CDN-10, is in [module.md](../../../specs/module.md#rules); neither is repeated here. Where this meta use case does what the meta use case `derive-grammar` does, its rule cites the rule of [derive-grammar.md](../../derive-grammar/specs/derive-grammar.md) (DGR) and states only what differs. The meta rules of the Clean examples, the expected output block among them, are in [clean-examples](../../../../clean-examples/specs/module.md); this meta use case does not check them ([CDN-4](../../../specs/module.md#rules)). Systems it works with: the grammar of `derive-grammar`, which parses each fragment; Lean 4 and its build tool Lake, which build and run the semantics; GitHub, through `gh`, for the issues. Out of scope: the grammar, which `derive-grammar` derives; the syntax errors of Clean (`expect=syntax-error`), which the grammar checks; the commit and the push of the output, which the build makes ([NRM-9](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/norms-management/specs/module.md#derive-the-derived-norms)); adding the type `semantics` to `derived_norms` of the project's `project.json`, a change of layer 1. The meta use case must never decide what the norms do not decide.
 
-A use case of the module `clean-derived-norms`, specified in [module.md](../../../specs/module.md); the modules of the app are listed in [app.md](../../../../../specs/app.md).
+A meta use case of the meta module `clean-derived-norms`, specified in [module.md](../../../specs/module.md); the meta modules of the meta app are listed in [app.md](../../../../../specs/app.md).
 
-The use case has two parts. The script does what is deterministic: the work list, the case of each fragment, its parse tree, the fixed files of the Lake project, the list of derived norms, the header line, and the checks, which build the semantics and run every fragment. The deriver, following `SKILL.md`, does the derivation: it writes the Lean code and the status lines. The script never writes a declaration of the Lean code, never decides a state, and holds nothing specific to Clean.
+The meta use case has two parts. The script does what is deterministic: the work list, the case of each fragment, its parse tree, the fixed files of the Lake project, the list of derived norms, the header line, and the checks, which build the semantics and run every fragment. The deriver, following `SKILL.md`, does the derivation: it writes the Lean code and the status lines. The script never writes a declaration of the Lean code, never decides a state, and holds nothing specific to Clean.
 
 ## Terms
 
 | Term | Meaning |
 |---|---|
-| Use case | The use case `derive-semantics` of the plugin `clean-derived-norms`, invoked as `/clean-derived-norms:derive-semantics`; the actor of every requirement that names no other. A run is one invocation of it, by `/norms-management:build` ([NRM-2](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/norms-management/specs/module.md#derive-the-derived-norms)) or by a person. |
-| Repository | The repository of layer 2 of the project, where the use case runs, from its root ([CLN-1](../../../../../specs/app.md#rules)). |
-| Script | `use-cases/derive-semantics/derive_semantics.py` of the plugin, run from the root of the repository as `uv run --with "lark[interegular]" python3 -I <script> <command>`. Its commands are `worklist`, `tree <norm ID>...`, `seal --model <model ID>`, `check` and `stale-citations`. It imports the module script, and not the script of `derive-grammar` ([CDN-7](../../../specs/module.md#rules)). Its tests are `tests/test_derive_semantics.py` of the module. |
+| Meta use case | The meta use case `derive-semantics` of the plugin `clean-derived-norms`, invoked as `/clean-derived-norms:derive-semantics`; the actor of every requirement that names no other. A run is one invocation of it, by `/norms-management:build` ([NRM-2](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/norms-management/specs/module.md#derive-the-derived-norms)) or by a person. |
+| Repository | The repository of layer 2 of the project, where the meta use case runs, from its root ([CLN-1](../../../../../specs/app.md#rules)). |
+| Script | `use-cases/derive-semantics/derive_semantics.py` of the plugin, run from the root of the repository as `uv run --with "lark[interegular]" python3 -I <script> <command>`. Its commands are `worklist`, `tree <norm ID>...`, `seal --model <model ID>`, `check` and `stale-citations`. It imports the module script, and not the script of `derive-grammar` ([CDN-7](../../../specs/module.md#rules)). Its tests are `tests/test_derive_semantics.py` of the meta module. |
 | Module script | As [module.md](../../../specs/module.md#terms) defines it: the code that the script shares with the script of `derive-grammar`, the parser of the grammar among it. |
-| Deriver | The AI that runs the use case and writes the Lean code. |
+| Deriver | The AI that runs the meta use case and writes the Lean code. |
 | Grammar | The file `specs-derived/grammar/clean.lark`, the output of `derive-grammar`. |
 | Semantics folder | The folder `specs-derived/semantics/`: a Lake project of Lean 4. |
 | Fixed file | One of the files `lakefile.toml`, `lean-toolchain`, `Fragment.lean` and `Main.lean` of the semantics folder, whose text the script holds and writes (DSM-3). |
@@ -49,13 +49,13 @@ The use case has two parts. The script does what is deterministic: the work list
 | Outcome | What the semantics gives for a parse tree: an error code or none, and a standard output (DSM-11). |
 | Gap | A semantic fragment whose case the Lean code cannot give without deciding something that no norm says. |
 | Example that is not a whole program | A semantic fragment whose code is no whole program, outside the exception of [CEX-31](../../../../clean-examples/specs/module.md#the-program) for a fragment with `expect=error`: it uses a name that it does not declare, that no norm defines, and whose use with no declaration does not give its error code by a norm. It is a defect of the example, not a gap of the norms. |
-| Stale citation of the script, stale cited norm | As derive-grammar.md defines them, for the code of the script of this use case: the script alone. The citations of the module script are the ones of `derive-grammar` (DSM-17). |
+| Stale citation of the script, stale cited norm | As derive-grammar.md defines them, for the code of the script of this meta use case: the script alone. The citations of the module script are the ones of `derive-grammar` (DSM-17). |
 
 The binding words are those of [writing-specs.md](https://github.com/jpchauny/indra-software-factory/blob/main/specs/writing-specs.md#how-to-read-the-rules); the text after `Rationale:` explains and does not bind.
 
 ## Derive the semantics
 
-This section states how the use case derives the semantics, checks it against the fragments, and hands its gaps to layer 1.
+This section states how the meta use case derives the semantics, checks it against the fragments, and hands its gaps to layer 1.
 
 ```gherkin
 Feature: Derive the semantics of Clean from the norms
@@ -63,11 +63,11 @@ Feature: Derive the semantics of Clean from the norms
   As a person who keeps layer 2 of the Clean Language project
   I want the semantics derived from the prose norms, checked against every fragment and its expected output, every declaration citing its norms, and only what changed derived again
 
-  Rule: DSM-1 The use case reads only layer 2 and the grammar (NRM-3), and writes in the repository only under specs-derived/semantics/
+  Rule: DSM-1 The meta use case reads only layer 2 and the grammar (NRM-3), and writes in the repository only under specs-derived/semantics/
     Rationale: the semantics reads each fragment as the grammar parses it, so it comes after the grammar and never parses Clean in a way of its own; it writes only its own folder, so the other outputs of layer 2 stay as their generators left them.
 
-    Scenario: What the use case reads and writes
-      When the use case runs
+    Scenario: What the meta use case reads and writes
+      When the meta use case runs
       Then it reads "data/tree.jsonl" as it is in the working tree, and may read "specs-repo-annotated/"
       And it reads the grammar, the output of the type "grammar", which "derived_norms" lists before "semantics" (NRM-1, NRM-3)
       And it reads what DGR-1 lists for "derive-grammar", with the semantics folder in place of the grammar's files and the list of derived norms of the type "semantics" in place of the one of "grammar", and the issues of "Ivan-Pasco/clean-language-foundation" and of "jpchauny/clean-language-tooling"
@@ -81,7 +81,7 @@ Feature: Derive the semantics of Clean from the norms
       Given the grammar does not exist, or Lark cannot build it as DGR-13 builds it
       When the script runs "worklist", "tree" or "check"
       Then it prints the error, naming the grammar, and exits with 2, and writes nothing
-      And the use case stops with that error (NRM-2): "derive-grammar" must run first
+      And the meta use case stops with that error (NRM-2): "derive-grammar" must run first
 
   Rule: DSM-2 The semantics comes from the prose norms; the fragments and their expected outputs check it
     Rationale: the prose states the rule, and an example shows one run of it; a semantics built from the examples alone would hold whatever they happen to show, and decide the rest.
@@ -123,15 +123,15 @@ Feature: Derive the semantics of Clean from the norms
 
     Scenario: A misplaced expected output block is not read
       Given an expected output block is not the expected output of a fragment, as after a paragraph or a second one in a row
-      When the use case runs
+      When the meta use case runs
       Then it reads it as the text of a norm only, and checks no fragment against it
-      And it reports nothing about its place: CEX-27 and CEX-28 are rules of the examples, checked in layers 0 and 1 (CDN-4)
+      And it reports nothing about its place: CEX-27 and CEX-28 are meta rules of the examples, checked in layers 0 and 1 (CDN-4)
 
   Rule: DSM-3 The output is one Lake project, one list of derived norms and one status file in the semantics folder
     Rationale: a fixed set of files, each with one role, lets the header line hash each file (NRM-5) and lets an agent of layer 4 find the typing or the evaluation at once; the fixed files are where the script and the Lean code meet, and one text of them, in the script, keeps both sides in step. Deliberate design: the version of Lean is pinned, so that the same Lean code builds and runs the same way in every run; another version of Lean is a new version of the plugin.
 
     Scenario: The layout
-      When the use case has run
+      When the meta use case has run
       Then the semantics folder holds exactly these files, and no other:
         | file                                         | written by | what it holds |
         | lakefile.toml                                | the script | the Lake project: the libraries "Fragment" and "Clean", and the executable "fragment", whose root is "Main" |
@@ -184,7 +184,7 @@ Feature: Derive the semantics of Clean from the norms
 
     Scenario Outline: The states
       Given the semantic fragment "<id>", where only the fields and the reasons bind, and the hashes are illustrative
-      When the use case has run
+      When the meta use case has run
       Then its status line is <line>
 
       Examples:
@@ -207,7 +207,7 @@ Feature: Derive the semantics of Clean from the norms
 
     Scenario: The other states and issues
       When a fragment stops being pending, or its issue was closed, or a status line is left with a null issue
-      Then the use case does what the scenarios of DGR-5 and DGR-14 say for the grammar, with this status file
+      Then the meta use case does what the scenarios of DGR-5 and DGR-14 say for the grammar, with this status file
 
   Rule: DSM-6 The script takes the one case of a fragment from its opening line, and its expected output only from its expected output block
     Rationale: the opening line and the expected output block are the only places where an example states its expected outcome (CEX-4, CEX-29, CDN-2); a comment written for a reader is never read as one.
@@ -380,7 +380,7 @@ Feature: Derive the semantics of Clean from the norms
       When the deriver derives it
       Then it invents no declaration of "score", no value and no type for it, and no context in which an undeclared name is known: nothing outside the code of an example builds its program (CEX-32)
       And "STA-9" is an example that is not a whole program: "pending", with a reason of the form "<norm ID> is not a whole program (CEX-31): it uses <the name or the names>, which it does not declare and no norm defines: <norm ID>@<norm hash>", that names each such name and cites the fragment, and then any other norm involved, such as "STA-9 is not a whole program (CEX-31): it uses the name score, which it does not declare and no norm defines: STA-9@<its norm hash>"
-      And CEX-31 is cited as text, not as "<norm ID>@<norm hash>": it is a rule of the examples, not a norm of layer 2
+      And CEX-31 is cited as text, not as "<norm ID>@<norm hash>": it is a meta rule of the examples, not a norm of layer 2
       And it gets its own issue in layer 1 at once, as a defect of the example (DSM-14)
       And the same holds for a fragment with "expect=error" that uses "score" and does not declare it, when no norm gives its error code for a name that is used and not declared
 
@@ -394,7 +394,7 @@ Feature: Derive the semantics of Clean from the norms
 
     Scenario: A reason of an earlier version
       Given the status line of "STA-9", written by an earlier version of the plugin, is pending with the reason "STA-9 uses the name score, which it does not declare and no norm declares: STA-9@<its norm hash>"
-      When the use case runs, and nothing puts "STA-9" on the work list (DSM-12)
+      When the meta use case runs, and nothing puts "STA-9" on the work list (DSM-12)
       Then its status line and its issue stay as they are: the work list does not list a fragment for the words of its reason
       And the deriver writes the reason of CEX-31 the next time it writes the status line of "STA-9"
 
@@ -550,35 +550,35 @@ Feature: Derive the semantics of Clean from the norms
 
     Scenario: As for the grammar
       When the deriver marks a semantic fragment pending as a gap, or as an example that is not a whole program
-      Then the use case opens its issue at once, as DGR-14 says, with no yes of the user and no parent, with these differences only (complete list):
+      Then the meta use case opens its issue at once, as DGR-14 says, with no yes of the user and no parent, with these differences only (complete list):
         | in DGR-14                                                      | here |
         | the label "derive-grammar"                                     | the label "derive-semantics" |
         | the search lists the issues with the label "derive-grammar"    | it lists those with the label "derive-semantics" |
         | the last line "Found while deriving the Lark grammar of Clean (/clean-derived-norms:derive-grammar), …" | "Found while deriving the Lean semantics of Clean (/clean-derived-norms:derive-semantics), foundation @ <sha>, norms @ <sha>." |
         | the fragment as it is                                          | the fragment as it is, followed by its expected output block as it is when it has one |
-        | the hand-off names "specs-derived/grammar/" and its use case   | it names "specs-derived/semantics/" and "/clean-derived-norms:derive-semantics" |
+        | the hand-off names "specs-derived/grammar/" and its meta use case   | it names "specs-derived/semantics/" and "/clean-derived-norms:derive-semantics" |
         | the verification on the status line of the grammar             | the verification on the status line of the semantics: after "/norms-management:build", the fragment is "derived" and "check" no longer lists it as pending |
       And a fragment pending with a fixed reason of DSM-5 gets no issue of its own (DSM-5)
 
     Scenario: The issue of an example that is not a whole program
       Given "STA-9" is pending because it is not a whole program (DSM-10), with no issue
-      When the use case opens its issue at once, as for a gap, with the same search for a duplicate, title form and order of the body, and the differences of "As for the grammar"
+      When the meta use case opens its issue at once, as for a gap, with the same search for a duplicate, title form and order of the body, and the differences of "As for the grammar"
       Then its labels are exactly "finding" and "derive-semantics", without "question": CEX-31 decides that the example must declare what it uses, so nothing waits for a decision on the norms
       And the gap in one sentence is "an example that is not a whole program (CEX-31)"
       And in place of "Decision needed", the body holds "Fix needed": the example declares each of them as a real part of its program, or repeats the declaration that another Clean example shows (CEX-33); never a stub, a fake stand-in for a name defined elsewhere (CEX-33), nor a focus comment (CEX-34); and when the specs define no such declaration yet, the specs define it first, and the example stays pending until then
       And the hand-off asks for that fix; its first step shows the user the fragment and the names that it does not declare, and waits for the yes; and its verification is that, after "/norms-management:build", the fragment is no longer pending for that reason
       And the full template is in "SKILL.md"
 
-  Rule: DSM-15 The use case ends by showing what it did, the issues it opened, and the result of the check
+  Rule: DSM-15 The meta use case ends by showing what it did, the issues it opened, and the result of the check
     Rationale: as for DGR-15.
 
     Scenario: The end of a run
-      When the use case has run
+      When the meta use case has run
       Then it shows what DGR-15 lists, with the declarations added, changed or removed, by key, in place of the statements
       And, as DGR-15 says, it does not list the derived norms new, changed and gone, which the step of layer 2 compares as NRM-11 says
       And then the output of the check, and its exit status
 
-  Rule: DSM-16 The output, the list of derived norms among it, changes only through a run of the use case
+  Rule: DSM-16 The output, the list of derived norms among it, changes only through a run of the meta use case
     Rationale: layer 2 is never edited by hand (LAY-3); the hashes of the header line show a change that no run made.
 
     Scenario: A change by hand
@@ -592,7 +592,7 @@ Feature: Derive the semantics of Clean from the norms
     Scenario: As for the grammar
       When the script runs "stale-citations"
       Then it prints what DGR-18 says, for the citations in the code of this script
-      And the use case opens the issue of each stale cited norm at once, as DGR-18 says, with the label "derive-semantics", the title "clean-derived-norms derive-semantics: <norm ID> <changed | was retired | is gone>, its citation is stale (<norm ID>)", the path "modules/clean-derived-norms/use-cases/derive-semantics/derive_semantics.py" and the last line "Found while checking the Lean semantics of Clean (/clean-derived-norms:derive-semantics), foundation @ <sha>, norms @ <sha>."
+      And the meta use case opens the issue of each stale cited norm at once, as DGR-18 says, with the label "derive-semantics", the title "clean-derived-norms derive-semantics: <norm ID> <changed | was retired | is gone>, its citation is stale (<norm ID>)", the path "modules/clean-derived-norms/use-cases/derive-semantics/derive_semantics.py" and the last line "Found while checking the Lean semantics of Clean (/clean-derived-norms:derive-semantics), foundation @ <sha>, norms @ <sha>."
 
     Scenario: The citations of the script
       When the script is written
@@ -600,7 +600,7 @@ Feature: Derive the semantics of Clean from the norms
       And the parse cites, in the module script, the norms of the indenter (DGR-18), whose stale citations "derive-grammar" reports
 
   Rule: DSM-18 Each declaration of the Lean code is one derived norm, which the list of derived norms names by its derived norm ID and its derived norm fingerprint (NRM-12 to NRM-15, CDN-8)
-    Rationale: an agent of layer 4 cites the typing or the evaluation of one construct by the derived norm ID of its declaration, and sees by its derived norm fingerprint that it changed; a declaration is the smallest part of the Lean code that cites its own norms (DSM-8), so it is the derived norm; its name, which CDN-10 makes from its key, is what keeps it the same from one run to the next, as CDN-8 says for every use case of the module.
+    Rationale: an agent of layer 4 cites the typing or the evaluation of one construct by the derived norm ID of its declaration, and sees by its derived norm fingerprint that it changed; a declaration is the smallest part of the Lean code that cites its own norms (DSM-8), so it is the derived norm; its name, which CDN-10 makes from its key, is what keeps it the same from one run to the next, as CDN-8 says for every meta use case of the module.
 
     Scenario: What one derived norm of the semantics is (NRM-15)
       Given the Lean code

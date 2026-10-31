@@ -5,10 +5,10 @@ description: Derive the Lark grammar of Clean in specs-derived/grammar/ of the r
 
 # derive-grammar
 
-Implements [specs/derive-grammar.md](specs/derive-grammar.md) (DGR), with the
-rules of the module, CDN-1 to CDN-10, in [module.md](../../specs/module.md),
+Implements the meta spec [specs/derive-grammar.md](specs/derive-grammar.md) (DGR), with the
+meta rules of the meta module, CDN-1 to CDN-10, in [module.md](../../specs/module.md),
 and the interface of a derived-norms generator, NRM-1 to NRM-15, of the plugin
-`norms-management`. Each step below names the rule it follows.
+`norms-management`. Each step below names the meta rule it follows.
 
 Two parts. The script does what is deterministic: the work list, the case of
 each fragment, the list of derived norms, the header line and the checks. You, the deriver, write the
@@ -24,15 +24,15 @@ uv run --with "lark[interegular]" python3 -I -B "$S" <command>
 ```
 
 It imports the module script, the code that it shares with the script of
-`derive-semantics` (CDN-7 (The script of each use case of this module
-imports the module script, and no script of a use case imports the script
-of another use case)); the snippets below load it as `m`:
+`derive-semantics` (CDN-7 (The script of each meta use case of this meta module
+imports the module script, and no script of a meta use case imports the script
+of another meta use case)); the snippets below load it as `m`:
 
 ```sh
 M="${CLAUDE_PLUGIN_ROOT}/scripts/derived_norms.py"
 ```
 
-What you read and write (DGR-1 (The use case reads only layer 2 (NRM-3), and
+What you read and write (DGR-1 (The meta use case reads only layer 2 (NRM-3), and
 writes in the repository only under specs-derived/grammar/), DGR-3 (The output
 is one grammar, one status file and one list of derived norms under
 specs-derived/grammar/)):
@@ -335,7 +335,7 @@ uv run --with "lark[interegular]" python3 -I -B "$S" check
 line (DGR-4 (The first line of the status file records the specs commit, the
 generator, the model and the hashes of the output (NRM-5)), DGR-17 (The
 grammar, the list of derived norms and the status file change only through a
-run of the use case)),
+run of the meta use case)),
 such as
 
 ```
@@ -413,7 +413,7 @@ The issues of pending fragments go to `Ivan-Pasco/clean-language-foundation`
 (NRM-8), one per pending fragment (DGR-14). Open each one at once, while you
 derive: no proposal, no `↳ ¿anoto?` line, no yes. The same holds for the
 comment on an open duplicate: it is posted at once, and no link is proposed.
-This use case departs from `/utilities:issue` only in the yes (decision of
+This meta use case departs from `/utilities:issue` only in the yes (decision of
 the user, 2026-10-23) and in the parent: an issue of a pending fragment has
 no parent in the tree of issues. The label `derive-grammar` identifies it,
 and the status file is its index.
@@ -734,7 +734,7 @@ for l in (out / "stale-citations.jsonl").read_text(encoding="utf-8").splitlines(
         "Context:",
         "- jpchauny/clean-language-tooling (local: clean-language-tooling in the project folder) is the tooling repository",
         "  of the project Clean Language and the marketplace that holds the plugin",
-        "  clean-derived-norms; its use case /clean-derived-norms:derive-grammar derives the Lark grammar of Clean",
+        "  clean-derived-norms; its meta use case /clean-derived-norms:derive-grammar derives the Lark grammar of Clean",
         "  in specs-derived/grammar/ of Ivan-Pasco/clean-language-norms (layer 2) from the norms of data/tree.jsonl.",
         f"- The code of its script cites, in {where},",
         f"  the norms it follows, as \"# <norm ID>@<norm hash>: <reason>\" (DGR-9 and DGR-18 of {SPEC});",
@@ -744,13 +744,13 @@ for l in (out / "stale-citations.jsonl").read_text(encoding="utf-8").splitlines(
         f"Problem: the citation of {i} in the code of the script is stale, so `check` fails with \"script-citation: {i}\", {at}.",
         "Decision: open; the user has not decided.",
         "  1. The code still follows from the new text: only the norm hash of the citation changes.",
-        "  2. The code no longer follows: change the code and its citation, and the spec and the tests that describe it.",
+        "  2. The code no longer follows: change the code and its citation, and the meta spec and the tests that describe it.",
         "  3. The norm no longer says it, is retired or is gone: cite the norm that says it now, or remove the code",
         "     that rests on it.",
         "Steps:",
         "1. Present the element to the user, short and simple: the context, the problem, the old and the new text,",
         "   and the options numbered, recommending none: the user chooses. Wait for the yes; change nothing before it.",
-        f"2. Change the spec first where it names {i}@{cited} (DGR-11, DGR-18), and have the user approve it (DEV-1).",
+        f"2. Change the meta spec first where it names {i}@{cited} (DGR-11, DGR-18), and have the user approve it (DEV-1).",
         "   Then change the code of the script as chosen, each citation as \"# <norm ID>@<norm hash>: <reason>\", with the norm hash",
         f"   of data/tree.jsonl, and every place of the tests that names {i}@{cited}. Show the diff first.",
         f"3. Run the tests: cd <project folder>/clean-language-tooling && uv run --with pytest --with \"lark[interegular]\" python3 -I -B -m pytest -q -p no:cacheprovider {T}",
@@ -758,7 +758,7 @@ for l in (out / "stale-citations.jsonl").read_text(encoding="utf-8").splitlines(
         "   The fix is a change of the plugin, never a commit in the repository of layer 2.",
         "Verification: the tests pass; after the new version of the plugin runs (/norms-management:build in",
         f"clean-language-norms), `check` prints no line \"script-citation: {i}\", and stale-citations prints no line for {i}.",
-        "Rules (jpchauny/clean-language-tooling: its CLAUDE.md, and development.md of jpchauny/indra-software-factory): the spec comes first and the user",
+        "Rules (jpchauny/clean-language-tooling: its CLAUDE.md, and development.md of jpchauny/indra-software-factory): the meta spec comes first and the user",
         "approves it; the user decides, one element per message; English; files added each by its path, never a folder",
         "or git add -A; never git stash, git reset --hard or git clean: other sessions work in the repository.",
         f"Done when: no citation of {i} in the code of the script is stale, the new version of the plugin is released, and its",
@@ -843,7 +843,7 @@ step 4, with `"kind":"script"` and the norm ID.
 
 ## 6. Show
 
-End with (DGR-15 (The use case ends by showing what it did, the issues it
+End with (DGR-15 (The meta use case ends by showing what it did, the issues it
 opened, and the result of the check)):
 
 - The specs commit, the generator (plugin, version and tooling commit)
@@ -868,5 +868,5 @@ opened, and the result of the check)):
 
 Do not list the derived norms new, changed and gone: the step of layer 2
 compares them for its report (NRM-11). When `/norms-management:build` runs
-this use case, this report is its part of the build's report; the build
+this meta use case, this report is its part of the build's report; the build
 commits and pushes (NRM-9).

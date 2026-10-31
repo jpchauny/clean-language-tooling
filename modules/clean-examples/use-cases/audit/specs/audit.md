@@ -2,17 +2,17 @@
 
 **Prefix:** CAU
 
-**Audience:** The people who write the specs of layer 0 or layer 1 of the project and read the report; the model of the Claude Code session, which invokes the audit; whoever builds the skill `audit` of the plugin `clean-examples`
+**Audience:** The people who write the specs of layer 0 or layer 1 of the project and read the report; the model of the Claude Code session, which invokes the audit; whoever builds the meta use case `audit` of the plugin `clean-examples`
 
-**Scope:** What `/clean-examples:audit` reads, what it checks, what it reports, and what it never does. The rules it checks are those of [module.md](../../../specs/module.md) that [CEX-20](../../../specs/module.md#what-is-checked-and-by-whom) lists; they are not repeated here
+**Scope:** What `/clean-examples:audit` reads, what it checks, what it reports, and what it never does. The meta rules it checks are those of [module.md](../../../specs/module.md) that [CEX-20](../../../specs/module.md#what-is-checked-and-by-whom) lists; they are not repeated here
 
-A use case of the module `clean-examples`, specified in [module.md](../../../specs/module.md); the modules of the app are listed in [app.md](../../../../../specs/app.md).
+A meta use case of the meta module `clean-examples`, specified in [module.md](../../../specs/module.md); the meta modules of the meta app are listed in [app.md](../../../../../specs/app.md).
 
 ## Terms
 
 | Term | Meaning |
 |---|---|
-| Audit | The skill `audit` of the plugin `clean-examples`, invoked as `/clean-examples:audit [<path>]`; the actor of every rule that names no other. A run is one invocation of it. |
+| Audit | The skill `audit` of the plugin `clean-examples`, invoked as `/clean-examples:audit [<path>]`; the actor of every meta rule that names no other. A run is one invocation of it. |
 | Working repository | The git repository that holds the working directory. Its entry of `project.json` is found as [ORC-21](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/project-management/specs/module.md#where-the-repositories-are) says. |
 | Other repository | The repository of layer 1 when the working repository is that of layer 0, and that of layer 0 when it is that of layer 1. |
 | Selected file | A spec file of the working repository that the argument selects (CAU-3). |
@@ -27,7 +27,7 @@ The terms repository, spec file, fenced block, info string, Clean example, expec
 Feature: Audit the Clean examples of a layer
   In order to keep every Clean example of the specs well formed and unambiguous
   As a person who writes the specs of layer 0 or layer 1 of the project
-  I want a report of every place that breaks a rule of the Clean examples, and of every block that looks like Clean code outside an example
+  I want a report of every place that breaks a meta rule of the Clean examples, and of every block that looks like Clean code outside an example
 
   Rule: CAU-1 The audit runs only when the user asks for it
     Scenario: Invocation
@@ -64,7 +64,7 @@ Feature: Audit the Clean examples of a layer
       When the audit runs
       Then it says which of the three holds, and checks nothing
 
-  Rule: CAU-5 The audit checks every Clean example of every selected file against the rules of CEX-20, every fenced block against CEX-2, and every expected output block against CEX-27 and CEX-28
+  Rule: CAU-5 The audit checks every Clean example of every selected file against the meta rules of CEX-20, every fenced block against CEX-2, and every expected output block against CEX-27 and CEX-28
     Scenario: A malformed opening line
       Given "specs/language/lexical.md" holds at line 40 a fenced block with the info string "clean-language expect=syntax-error code=SYN011"
       When the audit runs
@@ -164,13 +164,13 @@ Feature: Audit the Clean examples of a layer
     Scenario: The other repository is missing
       Given the other repository is not where "project.json" says
       When the audit runs
-      Then it checks every other rule, skips CEX-15 to CEX-18, and says which repository it did not find and where it expected it
+      Then it checks every other meta rule, skips CEX-15 to CEX-18, and says which repository it did not find and where it expected it
     Scenario: The registry is missing
       Given the repository of layer 1 holds no registry
       When the audit runs
-      Then it checks every other rule, skips CEX-15 to CEX-18, and says where it expected the registry
+      Then it checks every other meta rule, skips CEX-15 to CEX-18, and says where it expected the registry
 
-  Rule: CAU-8 The report is given in the chat, in one form, with one message per rule
+  Rule: CAU-8 The report is given in the chat, in one form, with one message per meta rule
     Scenario: The report
       When the audit ends
       Then it gives the report in the chat only, in this form:
@@ -187,9 +187,9 @@ Feature: Audit the Clean examples of a layer
         """
       And "<owner>/<name>" is that of the entry of the working repository in "project.json"
       And "<path>" is relative to the root of the repository that holds the file, with "/" between its parts, prefixed by "<owner>/<name>:" when that is the other repository
-      And the lines are ordered by path in code point order, then by line, then by rule ID in code point order
+      And the lines are ordered by path in code point order, then by line, then by meta rule ID in code point order
       And a section with no finding holds the line "None."
-      And each "<message>" is the one of this table for its rule:
+      And each "<message>" is the one of this table for its meta rule:
         | rule   | message                                                                 |
         | CEX-2  | the info string clean is replaced by clean-language                     |
         | CEX-4  | the info string is not one of the forms of CEX-4                        |

@@ -1,12 +1,12 @@
 ---
 name: audit
-description: Audit the Clean examples of the specs of the repository of layer 0 or layer 1 of the Clean Language project - every fenced block clean-language checked against the rules of the plugin clean-examples, every expected output block clean-language-output checked for its place and its info string, every old ```clean block, and every block outside an example that looks like Clean code - and report in the chat. Changes nothing. Use only when the user types /clean-examples:audit, or asks in words to audit the Clean examples ("audita los ejemplos", "audit the Clean examples").
+description: Audit the Clean examples of the specs of the repository of layer 0 or layer 1 of the Clean Language project - every fenced block clean-language checked against the meta rules of the plugin clean-examples, every expected output block clean-language-output checked for its place and its info string, every old ```clean block, and every block outside an example that looks like Clean code - and report in the chat. Changes nothing. Use only when the user types /clean-examples:audit, or asks in words to audit the Clean examples ("audita los ejemplos", "audit the Clean examples").
 argument-hint: "[<path>]"
 ---
 
 # audit
 
-Implements [specs/audit.md](specs/audit.md) (CAU-1 to CAU-9), with the rules of
+Implements the meta spec [specs/audit.md](specs/audit.md) (CAU-1 to CAU-9), with the meta rules of
 [module.md](../../specs/module.md) that CEX-20 lists. Never start it on your own
 (CAU-1).
 

@@ -2,23 +2,23 @@
 
 **Prefix:** DGR
 
-**Audience:** The people who keep layer 2 of the Clean Language project; whoever builds or changes the use case `derive-grammar` of the plugin `clean-derived-norms`
+**Audience:** The people who keep layer 2 of the Clean Language project; whoever builds or changes the meta use case `derive-grammar` of the plugin `clean-derived-norms`
 
-**Scope:** The use case `/clean-derived-norms:derive-grammar`, the generator of the type `grammar`, which derives, from the norms of layer 2, one Lark grammar of Clean ([LAY-3](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/development-methodology/specs/layers.md#rules)). It covers what the use case reads, what it writes, how it splits a fragment into the files of its program and parses each one, how it cites the norms, how it lists its derived norms, how it finds what to derive again, how it verifies, and how a gap goes to layer 1 ([LAY-5](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/development-methodology/specs/layers.md#rules)). The interface that it follows as a generator, NRM-1 to NRM-15, is in norms-management, [NRM-1 to NRM-11](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/norms-management/specs/module.md#derive-the-derived-norms) and [NRM-12 to NRM-15](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/norms-management/specs/module.md#the-list-of-derived-norms), and what holds for every use case of its module, CDN-1 to CDN-10, is in [module.md](../../../specs/module.md#rules); neither is repeated here. The rules of the Clean examples are in [clean-examples](../../../../clean-examples/specs/module.md), and this use case does not check them ([CDN-4](../../../specs/module.md#rules)). Out of scope: the semantics of Clean, and any other type of derived norms; how the norms get their IDs, which is in the specs of `norms-management`; the commit and the push of the output, which the build makes ([NRM-9](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/norms-management/specs/module.md#derive-the-derived-norms)). Each citation line of a derived norm is a citation of a norm, as [LAY-3](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/development-methodology/specs/layers.md#rules) says, in the form of the citation of a norm of [ACU-56](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/acceptance-management/specs/module.md#hashes-and-citations). How an issue is opened is the skill `utilities:issue`; DGR-14 adds what the issue of a pending fragment holds, and that this use case opens it without the yes of the user, DGR-18 does the same for the issue of a stale citation of the script, in `jpchauny/clean-language-tooling`, and `SKILL.md` holds the templates.
+**Scope:** The meta use case `/clean-derived-norms:derive-grammar`, the generator of the type `grammar`, which derives, from the norms of layer 2, one Lark grammar of Clean ([LAY-3](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/development-methodology/specs/layers.md#rules)). It covers what the meta use case reads, what it writes, how it splits a fragment into the files of its program and parses each one, how it cites the norms, how it lists its derived norms, how it finds what to derive again, how it verifies, and how a gap goes to layer 1 ([LAY-5](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/development-methodology/specs/layers.md#rules)). The interface that it follows as a generator, NRM-1 to NRM-15, is in norms-management, [NRM-1 to NRM-11](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/norms-management/specs/module.md#derive-the-derived-norms) and [NRM-12 to NRM-15](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/norms-management/specs/module.md#the-list-of-derived-norms), and what holds for every meta use case of its meta module, CDN-1 to CDN-10, is in [module.md](../../../specs/module.md#rules); neither is repeated here. The meta rules of the Clean examples are in [clean-examples](../../../../clean-examples/specs/module.md), and this meta use case does not check them ([CDN-4](../../../specs/module.md#rules)). Out of scope: the semantics of Clean, and any other type of derived norms; how the norms get their IDs, which is in the meta specs of the meta module `norms-management`; the commit and the push of the output, which the build makes ([NRM-9](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/norms-management/specs/module.md#derive-the-derived-norms)). Each citation line of a derived norm is a citation of a norm, as [LAY-3](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/development-methodology/specs/layers.md#rules) says, in the form of the citation of a norm of [ACU-56](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/acceptance-management/specs/module.md#hashes-and-citations). How an issue is opened is the skill `utilities:issue`; DGR-14 adds what the issue of a pending fragment holds, and that this meta use case opens it without the yes of the user, DGR-18 does the same for the issue of a stale citation of the script, in `jpchauny/clean-language-tooling`, and `SKILL.md` holds the templates.
 
-A use case of the module `clean-derived-norms`, specified in [module.md](../../../specs/module.md); the modules of the app are listed in [app.md](../../../../../specs/app.md).
+A meta use case of the meta module `clean-derived-norms`, specified in [module.md](../../../specs/module.md); the meta modules of the meta app are listed in [app.md](../../../../../specs/app.md).
 
-The use case has two parts. The script does what is deterministic: the work list, the case of each fragment, the list of derived norms, the header line and the checks. The deriver, following `SKILL.md`, does the derivation: it writes the statements of the grammar and the status lines. The script never writes a statement and never decides a state.
+The meta use case has two parts. The script does what is deterministic: the work list, the case of each fragment, the list of derived norms, the header line and the checks. The deriver, following `SKILL.md`, does the derivation: it writes the statements of the grammar and the status lines. The script never writes a statement and never decides a state.
 
 ## Terms
 
 | Term | Meaning |
 |---|---|
-| Use case | The use case `derive-grammar` of the plugin `clean-derived-norms`, invoked as `/clean-derived-norms:derive-grammar`; the actor of every requirement that names no other. A run is one invocation of it, by `/norms-management:build` ([NRM-2](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/norms-management/specs/module.md#derive-the-derived-norms)) or by a person. |
-| Repository | The repository of layer 2 of the project, where the use case runs, from its root ([CLN-1](../../../../../specs/app.md#rules)). |
-| Script | `use-cases/derive-grammar/derive_grammar.py` of the plugin, run from the root of the repository as `uv run --with "lark[interegular]" python3 -I <script> <command>`. Its commands are `worklist`, `seal --model <model ID>`, `check` and `stale-citations`. The root of the repository of layer 2 is the working directory; the script takes no `--root`. It imports the module script ([CDN-7](../../../specs/module.md#rules)). Its tests are `tests/test_derive_grammar.py` of the module. |
+| Meta use case | The meta use case `derive-grammar` of the plugin `clean-derived-norms`, invoked as `/clean-derived-norms:derive-grammar`; the actor of every requirement that names no other. A run is one invocation of it, by `/norms-management:build` ([NRM-2](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/norms-management/specs/module.md#derive-the-derived-norms)) or by a person. |
+| Repository | The repository of layer 2 of the project, where the meta use case runs, from its root ([CLN-1](../../../../../specs/app.md#rules)). |
+| Script | `use-cases/derive-grammar/derive_grammar.py` of the plugin, run from the root of the repository as `uv run --with "lark[interegular]" python3 -I <script> <command>`. Its commands are `worklist`, `seal --model <model ID>`, `check` and `stale-citations`. The root of the repository of layer 2 is the working directory; the script takes no `--root`. It imports the module script ([CDN-7](../../../specs/module.md#rules)). Its tests are `tests/test_derive_grammar.py` of the meta module. |
 | Code of the script | The code of the script and of the module script ([module.md](../../../specs/module.md#terms)). A line of it is named by the path of its file in the plugin and its number in that file, such as `scripts/derived_norms.py line 753`. |
-| Deriver | The AI that runs the use case and writes the grammar. |
+| Deriver | The AI that runs the meta use case and writes the grammar. |
 | Model ID | The exact ID of the model that the deriver runs as, such as `claude-opus-5-5`, which the deriver knows from its own context. The header line of the status file records it as `model` (DGR-4). Its form is letters, digits, `.`, `-` and `_`, at least one: `^[A-Za-z0-9._-]+$`. |
 | Plugin version | The `version` of the `.claude-plugin/plugin.json` of the plugin `clean-derived-norms` that holds the script, a string; the plugin always has one ([NRM-5](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/norms-management/specs/module.md#derive-the-derived-norms)). |
 | Tooling commit | The commit of the tooling repository, the marketplace that the plugin was installed from ([NRM-5](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/norms-management/specs/module.md#derive-the-derived-norms), [LAY-14](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/development-methodology/specs/layers.md#the-tooling-repository)), found in this order: the `gitCommitSha` of the entry of `~/.claude/plugins/installed_plugins.json` whose `installPath` is the plugin's root; otherwise the full sha of `HEAD` of the git checkout that holds the plugin's root; otherwise `none`. |
@@ -52,9 +52,9 @@ The use case has two parts. The script does what is deterministic: the work list
 
 ## Derive the grammar
 
-This section states how the use case derives the grammar, checks it, and hands its gaps to layer 1.
+This section states how the meta use case derives the grammar, checks it, and hands its gaps to layer 1.
 
-DGR-7 (A partial fragment is not considered) is removed: by a decision of the user, a fragment is derived or pending, and its case comes from its opening line ([CDN-2](../../../specs/module.md#rules), DGR-6). DGR-16 (The run commits and pushes its output to main) is removed: the step of layer 2 commits and pushes the output ([NRM-9](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/norms-management/specs/module.md#derive-the-derived-norms)), and the use case commits nothing. Both numbers stay unused ([SST-7](https://github.com/jpchauny/indra-software-factory/blob/main/specs/spec-structure.md#ids-of-clauses)).
+DGR-7 (A partial fragment is not considered) is removed: by a decision of the user, a fragment is derived or pending, and its case comes from its opening line ([CDN-2](../../../specs/module.md#rules), DGR-6). DGR-16 (The run commits and pushes its output to main) is removed: the step of layer 2 commits and pushes the output ([NRM-9](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/norms-management/specs/module.md#derive-the-derived-norms)), and the meta use case commits nothing. Both numbers stay unused ([SST-7](https://github.com/jpchauny/indra-software-factory/blob/main/specs/spec-structure.md#ids-of-clauses)).
 
 ```gherkin
 Feature: Derive the grammar of Clean from the norms
@@ -62,10 +62,10 @@ Feature: Derive the grammar of Clean from the norms
   As a person who keeps layer 2 of the Clean Language project
   I want the grammar derived from the fragments, every rule citing its norms, and only what changed derived again
 
-  Rule: DGR-1 The use case reads only layer 2 (NRM-3), and writes in the repository only under specs-derived/grammar/
+  Rule: DGR-1 The meta use case reads only layer 2 (NRM-3), and writes in the repository only under specs-derived/grammar/
 
-    Scenario: What the use case reads and writes
-      When the use case runs
+    Scenario: What the meta use case reads and writes
+      When the meta use case runs
       Then it reads "data/tree.jsonl" as it is in the working tree, and may read "specs-repo-annotated/"
       And for the old text of a stale cited norm, it reads the versions of "data/tree.jsonl" in the history of HEAD, with git (DGR-18)
       And it reads the grammar, the status file and the list of derived norms, and, with git, the list before the run (DGR-20)
@@ -108,7 +108,7 @@ Feature: Derive the grammar of Clean from the norms
   Rule: DGR-3 The output is one grammar, one status file and one list of derived norms under specs-derived/grammar/
 
     Scenario: The layout
-      When the use case has run
+      When the meta use case has run
       Then "specs-derived/" holds one folder per type of derived norms
       And "specs-derived/grammar/" holds exactly "clean.lark", "derived-norms.jsonl" and "clean-language-code-examples-status.jsonl"
 
@@ -167,7 +167,7 @@ Feature: Derive the grammar of Clean from the norms
 
     Scenario Outline: The states
       Given the fragment "<id>"
-      When the use case has run
+      When the meta use case has run
       Then its status line is <line>
 
       Examples:
@@ -179,14 +179,14 @@ Feature: Derive the grammar of Clean from the norms
 
     Scenario: A pending gap
       Given the fragment "COR-638" is a gap
-      When the use case has run
+      When the meta use case has run
       Then its state is "pending"
       And its "reason" says what the norms leave open, and cites at least one norm that leaves it open, as "<norm ID>@<norm hash>"
       And its "issue" is null until the issue is opened, and then the URL of the issue
 
     Scenario Outline: The issue of a fragment that is no longer pending
       Given "COR-638" was "pending" with the issue "https://github.com/Ivan-Pasco/clean-language-foundation/issues/12"
-      When the use case has run and "COR-638" <now>
+      When the meta use case has run and "COR-638" <now>
       Then <result>
       And the end report (DGR-15) lists that issue as one that the fix in layer 1 may close
 
@@ -196,7 +196,7 @@ Feature: Derive the grammar of Clean from the norms
         | is gone           | its status line is removed            |
 
     Scenario: Every fragment has its line
-      When the use case has run
+      When the meta use case has run
       Then each fragment has exactly one status line, with its current norm hash
       And no status line names a norm that is not a fragment
 
@@ -275,7 +275,7 @@ Feature: Derive the grammar of Clean from the norms
       Given the case of "SEM-79" is "reject"
       When the script checks it
       Then the grammar must reject the text, as DGR-13 says
-      And the error code "SYN007" itself, and its prefix, are not checked: they are rules of the examples (CDN-4), and the compiler's business
+      And the error code "SYN007" itself, and its prefix, are not checked: they are meta rules of the examples (CDN-4), and the compiler's business
 
   Rule: DGR-8 Every statement of the grammar cites its norms, one citation line per norm, just above it
 
@@ -488,14 +488,14 @@ Feature: Derive the grammar of Clean from the norms
 
     Scenario: A status file of the local skill
       Given the status file has a header line with no field "generator", as the local skill "/derive-grammar" of the repository of layer 2 wrote it
-      When the use case runs
+      When the meta use case runs
       Then the work list takes the status file and the grammar as absent: every fragment is "new"
       And the run writes both files anew
 
     Scenario: A status file written before its first line was named the header line
       Given the first line of the status file has "type" "meta", and "generator" holds "plugin", "version" "0.4.0" and "marketplace_commit", as version "0.4.0" of the plugin wrote it
       And the plugin that runs "worklist" has the plugin version "0.5.0"
-      When the use case runs
+      When the meta use case runs
       Then the work list reads that first line as the header line, and its "version" "0.4.0" as the version of the generator: a new version (NRM-5, NRM-7)
       And "seal" drops that line and writes the header line of DGR-4, with "type" "header" and "tooling_commit"
 
@@ -549,10 +549,10 @@ Feature: Derive the grammar of Clean from the norms
     Scenario: Two status lines with one issue URL are fixed in the same run
       Given the status lines of "COR-638" and "LAU-42" hold the issue "https://github.com/Ivan-Pasco/clean-language-foundation/issues/12", in that order in the status file
       When "check" reports the problem "issue"
-      Then the use case fixes it at once, with no question
+      Then the meta use case fixes it at once, with no question
       And "COR-638", the first of those lines in the order of the status file, keeps the URL
       And "LAU-42" gets "issue": null and, when it is pending, its own issue is opened in the same run, as DGR-14 says
-      And the use case runs "seal --model <model ID>" and "check" again, and the end report lists each line changed (DGR-15)
+      And the meta use case runs "seal --model <model ID>" and "check" again, and the end report lists each line changed (DGR-15)
 
     Scenario Outline: The generator at check time
       Given the header line records the generator <recorded>, and its other fields and hashes are right
@@ -604,7 +604,7 @@ Feature: Derive the grammar of Clean from the norms
 
     Scenario: No fragment yet
       Given "data/tree.jsonl" holds no fragment
-      When the use case runs
+      When the meta use case runs
       Then the grammar holds no statement, the status file only its header line, and the list of derived norms only its header line
       And "check" does not build the grammar, checks only the header line, the list of derived norms (DGR-20) and the citations of the script, and exits with 0 when they pass
       And the end report says that layer 2 holds no Clean example yet
@@ -648,46 +648,46 @@ Feature: Derive the grammar of Clean from the norms
   Rule: DGR-14 Each pending fragment gets its own issue in layer 1 at once (NRM-8), and the derivation goes on
 
     Scenario: The run
-      When "/norms-management:build" runs the use case as the generator of the type "grammar" (NRM-2), or a person invokes "/clean-derived-norms:derive-grammar"
+      When "/norms-management:build" runs the meta use case as the generator of the type "grammar" (NRM-2), or a person invokes "/clean-derived-norms:derive-grammar"
       Then it lists the work, derives every item, opens the issue of each pending fragment, seals and checks, opens the issue of each stale cited norm (DGR-18), and waits for no answer of the user
 
     Scenario: No yes
-      When the use case finds a pending fragment
+      When the meta use case finds a pending fragment
       Then it opens its issue at once, during the run, without proposing it and without waiting for a yes of the user (decision of the user, 2026-10-23)
       And it writes no message of proposals and no line "↳ ¿anoto? …"
       And when an open issue counts as a duplicate, it comments on it at once, and proposes no link
-      And this use case departs from "utilities:issue" only in the yes and in the parent ("No parent"): the template, the search for a duplicate, the labels and the hand-off stay as this rule says
+      And this meta use case departs from "utilities:issue" only in the yes and in the parent ("No parent"): the template, the search for a duplicate, the labels and the hand-off stay as this meta rule says
 
     Scenario: A gap found
       Given the deriver marks "COR-638" pending, with no issue
       When it has written the status line
-      Then the use case searches for a duplicate, fills in the template, writes the body of the issue in the scratchpad, and opens the issue at once in the foundation "Ivan-Pasco/clean-language-foundation", unless an open duplicate counts
+      Then the meta use case searches for a duplicate, fills in the template, writes the body of the issue in the scratchpad, and opens the issue at once in the foundation "Ivan-Pasco/clean-language-foundation", unless an open duplicate counts
       And it writes the URL of the issue, or of the open duplicate, in the "issue" of the status line
       And it goes on with the next item, without waiting for an answer
 
     Scenario: One issue per pending fragment
       Given "COR-638" and "LAU-42" are pending for the same gap, and neither has an issue
-      When the use case opens their issues
+      When the meta use case opens their issues
       Then it opens two issues, one for each fragment
       And never one issue shared by several fragments
 
     Scenario: No parent
-      When the use case opens the issue of a pending fragment
+      When the meta use case opens the issue of a pending fragment
       Then the issue has no parent in the tree of issues
       And the label "derive-grammar" identifies it, and the status file is its index; the baseline is the tree of the findings of a conversation, not of a generator
 
     Scenario: The search for a duplicate
       Given "COR-638" is pending, with no issue
-      When the use case searches for a duplicate, before it opens the issue
+      When the meta use case searches for a duplicate, before it opens the issue
       Then it lists the open and closed issues of the foundation with the label "derive-grammar", without the search index of GitHub: gh issue list -R Ivan-Pasco/clean-language-foundation --state all --label derive-grammar -L 5000 --json number,title,state,url
       And a result counts only when its title ends with "(COR-638)"
       And an issue of another fragment is never a duplicate, even with a gap that looks alike
-      And when one that counts is open, the use case opens no issue: it comments on that one at once, with the line "Still pending at foundation @ <sha>, norms @ <sha>: <reason>", proposes no link and waits for no yes, and writes its URL in the "issue" of the status line
-      And the list does not go through the search index of GitHub, so an issue created a moment ago is already in it, and the use case never opens a second issue for one fragment
+      And when one that counts is open, the meta use case opens no issue: it comments on that one at once, with the line "Still pending at foundation @ <sha>, norms @ <sha>: <reason>", proposes no link and waits for no yes, and writes its URL in the "issue" of the status line
+      And the list does not go through the search index of GitHub, so an issue created a moment ago is already in it, and the meta use case never opens a second issue for one fragment
 
     Scenario: A closed duplicate
       Given the search for "COR-638" finds the closed issue #12, whose title ends with "(COR-638)", and no open one that counts
-      When the use case opens the issue of "COR-638"
+      When the meta use case opens the issue of "COR-638"
       Then it opens a new issue, whose body holds the line "Related: #12", which links the closed one
       And when several closed issues count, the line links every one of them, such as "Related: #12, #15"
       And it does not reopen a closed one and does not comment on it
@@ -695,21 +695,21 @@ Feature: Derive the grammar of Clean from the norms
 
     Scenario: The issue of a gap
       Given "COR-638" is pending as a gap, with no issue, and the search found no open duplicate
-      When the use case opens its issue, as "utilities:issue" does but without the yes
+      When the meta use case opens its issue, as "utilities:issue" does but without the yes
       Then it opens it in "Ivan-Pasco/clean-language-foundation", in English, with the body written to the scratchpad first
       And its title is "<spec file> — <section>: <the gap in one sentence> (COR-638)", which ends with the ID of the fragment in parentheses
       And its labels are exactly "finding", "question" and "derive-grammar", each created first if the repository lacks it
       And its body holds, in this order: what happens, with the ID of the fragment, its file, its section, the foundation commit, the gap, and each norm involved as "<norm ID> (<title>) @<norm hash>"; the fragment as it is, its opening line and its closing fence included; "Decision needed", with each reading that the specs allow and a ✅ or ❌ minimal example of each, none of them recommended (DGR-10); the line "Related: #<m>, ...", which links on one line every closed issue that counts as a duplicate and every other gap issue that looks alike, when there is one; "Hand-off", in a "text" block of four backticks; and the last line "Found while deriving the Lark grammar of Clean (/clean-derived-norms:derive-grammar), foundation @ <sha>, norms @ <sha>."
       And the hand-off names the issue and the two repositories, says that the fragment is pending with its reason, gives the problem with "specs/<file>:<line>", where "<file>" is the path of the fragment under "specs/" of the foundation, such as "language/syntax/expressions.md", leaves the decision open with the readings numbered as options, says that the fix must change the fragment itself or a norm its reason cites, so that the next run tries it again, and holds the steps, the verification, the rules of the foundation, when it is done, and "Closes #<n>"
-      And its verification is that, after "/norms-management:build", which runs the use case (NRM-2), the status line of "COR-638" is "derived" and "check" no longer lists "COR-638" as pending
+      And its verification is that, after "/norms-management:build", which runs the meta use case (NRM-2), the status line of "COR-638" is "derived" and "check" no longer lists "COR-638" as pending
       And the full template is in "SKILL.md", with where each value comes from: the status line, "data/tree.jsonl" and git
-      And once it is opened, the use case at once writes the URL of the issue in the "issue" of the status line
+      And once it is opened, the meta use case at once writes the URL of the issue in the "issue" of the status line
       And then it writes the number of the issue, the last part of its URL, for "#<n>" in the body, never in the line "Related:", and edits the issue with it
       And it seals and checks at the end of the file (DGR-13, DGR-17)
 
     Scenario: The issue of a fragment whose opening line is none of the forms of CEX-4 (CDN-3)
       Given "SEM-183" is pending because its opening line is none of the forms of CEX-4 (DGR-6), with no issue
-      When the use case opens its issue, as for a gap, with the same search for a duplicate, title form and order of the body
+      When the meta use case opens its issue, as for a gap, with the same search for a duplicate, title form and order of the body
       Then its labels are exactly "finding" and "derive-grammar", without "question": CEX-4 decides the form, so nothing waits for a decision on the norms
       And the gap in one sentence is "an opening line that is none of the forms of CEX-4"
       And in place of "Decision needed", the body holds "Fix needed": write the opening line as CEX-4 says, keeping every line of the code byte for byte and in order
@@ -718,13 +718,13 @@ Feature: Derive the grammar of Clean from the norms
 
     Scenario: Gaps that look alike
       Given the gaps of "COR-638" and "LAU-42" look alike, and the issue of "COR-638" is #12
-      When the use case opens the issue of "LAU-42"
+      When the meta use case opens the issue of "LAU-42"
       Then its body holds the line "Related: #12"
       And that line is a link only: each fragment keeps its own issue, and nothing is grouped
 
     Scenario: An issue that cannot be opened
-      Given the use case cannot open the issue of "COR-638", such as when "gh" fails
-      When the use case goes on
+      Given the meta use case cannot open the issue of "COR-638", such as when "gh" fails
+      When the meta use case goes on
       Then the "issue" of the status line of "COR-638" stays null
       And the end report (DGR-15) shows the error
       And the next run opens it, as "A pending fragment with no issue" says
@@ -732,33 +732,33 @@ Feature: Derive the grammar of Clean from the norms
     Scenario: A pending fragment with no issue
       Given the status line of "COR-638" is "pending" with "issue": null, left by an earlier run that stopped or whose "gh" failed
       And "COR-638" did not change, so it is not on the work list
-      When the use case runs
+      When the meta use case runs
       Then it opens the issue of "COR-638" in this run, as for any pending fragment, with the search for a duplicate by its ID first
       And it does so for every pending status line with a null issue, whether or not its fragment changed, since a null issue only means that it was not opened yet
 
     Scenario: An issue whose number cannot be written
-      Given the use case opened the issue of "COR-638", and the edit that writes its number in the body fails
-      When the use case goes on
+      Given the meta use case opened the issue of "COR-638", and the edit that writes its number in the body fails
+      When the meta use case goes on
       Then the "issue" of the status line of "COR-638" keeps the URL of the issue
       And the end report (DGR-15) says that the body of the issue still holds "#<n>"
 
     Scenario: A pending fragment that already has its issue
       Given "COR-638" is pending, and its status line holds the URL of an issue
-      When the use case runs again and "COR-638" is still pending
+      When the meta use case runs again and "COR-638" is still pending
       Then it keeps the issue and opens no new one, when that issue is open
 
     Scenario: A pending fragment whose issue was closed
       Given "COR-638" is still pending, and the issue in its status line is closed
-      When the use case runs, whether or not "COR-638" changed
+      When the meta use case runs, whether or not "COR-638" changed
       Then it opens a new issue for "COR-638" at once, with the line "Related: #<m>" naming the closed one, as for a closed duplicate
       And it writes the new URL in the status line of "COR-638", in place of the old one
       And the end report (DGR-15) lists it among the issues opened
 
-  Rule: DGR-15 The use case ends by showing what it did, the issues it opened, and the result of the check
-    Rationale: the report is what the person, and the step of layer 2 (NRM-11), see of the run. The derived norms that changed are not in it: NRM-11 is the only rule that compares them, so that the report of the step and the orchestrator (ORC-10) tell the same ones; the use case ends before the commit of layer 2 of the run exists (NRM-9), so a comparison of its own could only take another base, and a run that builds again the same commit of layer 1 would show no change where NRM-11 shows one.
+  Rule: DGR-15 The meta use case ends by showing what it did, the issues it opened, and the result of the check
+    Rationale: the report is what the person, and the step of layer 2 (NRM-11), see of the run. The derived norms that changed are not in it: NRM-11 is the only meta rule that compares them, so that the report of the step and the orchestrator (ORC-10) tell the same ones; the meta use case ends before the commit of layer 2 of the run exists (NRM-9), so a comparison of its own could only take another base, and a run that builds again the same commit of layer 1 would show no change where NRM-11 shows one.
 
     Scenario: The end of a run
-      When the use case has run
+      When the meta use case has run
       Then it shows the specs commit, the generator (plugin, version and tooling commit) and the model, from the header line
       And the count of fragments by state
       And the items of the work list, by norm ID or key, and what was done with each
@@ -772,7 +772,7 @@ Feature: Derive the grammar of Clean from the norms
       And then the output of the check, and its exit status
       And it does not list the derived norms new, changed and gone, and its script has no command that compares two lists of derived norms: the step of layer 2 compares them, for its report, as NRM-11 says
 
-  Rule: DGR-17 The grammar, the list of derived norms and the status file change only through a run of the use case
+  Rule: DGR-17 The grammar, the list of derived norms and the status file change only through a run of the meta use case
 
     Scenario: A run seals its output
       When the deriver has worked through the work list
@@ -823,29 +823,29 @@ Feature: Derive the grammar of Clean from the norms
 
     Scenario: The run opens the issues
       Given "check" at the end of the run reports the problem "script-citation" for "LEX-20" (DGR-13)
-      When the use case has run "stale-citations"
+      When the meta use case has run "stale-citations"
       Then it opens the issue of "LEX-20" at once, in "jpchauny/clean-language-tooling", without proposing it and without waiting for a yes of the user (decision of the user, 2026-10-23)
       And "check" still fails with that problem: the issue does not silence it
-      And the use case never changes the script: a person fixes it in the plugin, which is released as a new version
+      And the meta use case never changes the script: a person fixes it in the plugin, which is released as a new version
       And it goes on with the end report (DGR-15)
 
     Scenario: One issue per stale cited norm
       Given lines 2 and 9 of the module script cite "LEX-21" with a stale norm hash, and line 5 cites "LEX-20" with one
-      When the use case opens their issues
+      When the meta use case opens their issues
       Then it opens two issues: one for "LEX-21", which names lines 2 and 9, and one for "LEX-20"
       And never one issue shared by several norms
 
     Scenario: The search for a duplicate
       Given "LEX-20" is a stale cited norm
-      When the use case searches for a duplicate, before it opens the issue
+      When the meta use case searches for a duplicate, before it opens the issue
       Then it lists the open and closed issues of "jpchauny/clean-language-tooling" with the label "derive-grammar", without the search index of GitHub: gh issue list -R jpchauny/clean-language-tooling --state all --label derive-grammar -L 5000 --json number,title,state,url
       And a result counts only when its title begins with "clean-derived-norms derive-grammar: " and ends with "(LEX-20)"
-      And when one that counts is open, the use case opens no issue: it comments on that one at once, with one line per stale citation "Still stale at norms @ <sha>: <path> line <line> cites LEX-20@<cited hash>; LEX-20 <now has the norm hash <current hash> | is retired | is gone>.", and waits for no yes
+      And when one that counts is open, the meta use case opens no issue: it comments on that one at once, with one line per stale citation "Still stale at norms @ <sha>: <path> line <line> cites LEX-20@<cited hash>; LEX-20 <now has the norm hash <current hash> | is retired | is gone>.", and waits for no yes
       And when the ones that count are all closed, it opens a new issue whose body holds the line "Related: #<m>, ...", which links every one of them, and it neither reopens nor comments on them
 
     Scenario: The issue of a stale cited norm
       Given "LEX-20" is a stale cited norm, and the search found no open duplicate
-      When the use case opens its issue, as "utilities:issue" does but without the yes
+      When the meta use case opens its issue, as "utilities:issue" does but without the yes
       Then it opens it in "jpchauny/clean-language-tooling", in English, with its title and its body written to the scratchpad first
       And its title is "clean-derived-norms derive-grammar: LEX-20 <changed | was retired | is gone>, its citation is stale (LEX-20)", which ends with the ID of the norm in parentheses
       And its labels are exactly "finding" and "derive-grammar", each created first if the repository lacks it
@@ -854,11 +854,11 @@ Feature: Derive the grammar of Clean from the norms
       And the hand-off names the issue and the repository, gives the problem with "modules/clean-derived-norms/<path>:<line>" of each of those lines, leaves the decision open with the options numbered, holds the steps, the verification, the rules of the repository and when it is done, and says that the fix is a change of the plugin, released as a new version, not a commit in the repository of layer 2
       And its verification is that the tests of the script pass and that, after the new version of the plugin runs, "check" prints no problem "script-citation" for "LEX-20"
       And the full template is in "SKILL.md", with where each value comes from: "stale-citations", "data/tree.jsonl" and git
-      And once it is opened, the use case writes the number of the issue, the last part of its URL, for "#<n>" in the body, never in the line "Related:", and edits the issue with it
+      And once it is opened, the meta use case writes the number of the issue, the last part of its URL, for "#<n>" in the body, never in the line "Related:", and edits the issue with it
 
     Scenario: An issue that cannot be opened or whose number cannot be written
-      Given "gh" fails when the use case opens the issue of "LEX-20", or when it edits its body
-      When the use case goes on
+      Given "gh" fails when the meta use case opens the issue of "LEX-20", or when it edits its body
+      When the meta use case goes on
       Then the end report (DGR-15) shows the error, or says that the body of the issue still holds "#<n>"
       And the next run, whose "check" still finds the stale citation, searches and opens again, as above
 
@@ -932,10 +932,10 @@ Feature: Derive the grammar of Clean from the norms
       And for a file with no path, it starts with "line 9 (file 2, no path, line 3): "
       And a case text with no file line keeps the message "line <n>: <type of the error>: <first line of its text>"
 
-    Scenario: The script checks no rule of the files (CDN-4, CDN-6)
+    Scenario: The script checks no meta rule of the files (CDN-4, CDN-6)
       Given the program of a fragment has two files with one path, a path that is not of the form of CEX-11, a code line before its first file line, no file or two files with "start:", or an expected line on a file line or before the first file line
       When the script checks it
-      Then it reports none of these: they are rules of CEX-20, checked in layers 0 and 1
+      Then it reports none of these: they are meta rules of CEX-20, checked in layers 0 and 1
       And it splits and parses the program all the same, as above: a file line with no path opens a file, two files with one path are two files, and an expected line before the first file line comes before every place of every file
 
     Scenario: The status file and the work list
@@ -943,7 +943,7 @@ Feature: Derive the grammar of Clean from the norms
       Then it is one case, as DGR-6 says, and its status line and its item of the work list have the fields of DGR-5 and DGR-12, and nothing more for its files
 
   Rule: DGR-20 Each statement of the grammar is one derived norm, which the list of derived norms names by its derived norm ID and its derived norm fingerprint (NRM-12 to NRM-15, CDN-8)
-    Rationale: layers 3 and 4 cite a rule of the grammar by its derived norm ID and see that it changed by its derived norm fingerprint, with one reader that knows no type (NRM-12); a statement is the smallest part of the grammar that cites its own norms (DGR-8), so it is the derived norm; its name, which CDN-10 makes from its key, is what keeps it the same from one run to the next, as CDN-8 says for every use case of the module; a name need not be unique, since two keys may give one name (CDN-10), and CDN-8 then pairs the statements of that name in order.
+    Rationale: layers 3 and 4 cite a rule of the grammar by its derived norm ID and see that it changed by its derived norm fingerprint, with one reader that knows no type (NRM-12); a statement is the smallest part of the grammar that cites its own norms (DGR-8), so it is the derived norm; its name, which CDN-10 makes from its key, is what keeps it the same from one run to the next, as CDN-8 says for every meta use case of the meta module; a name need not be unique, since two keys may give one name (CDN-10), and CDN-8 then pairs the statements of that name in order.
 
     Scenario: What one derived norm of the grammar is (NRM-15)
       Given the grammar

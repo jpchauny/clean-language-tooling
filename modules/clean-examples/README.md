@@ -1,6 +1,6 @@
 # clean-examples
 
-Module `clean-examples` of the app Clean Language: the rules of how a Clean
+Meta module `clean-examples` of the meta app Clean Language: the meta rules of how a Clean
 example of the specs is written ([specs/module.md](specs/module.md)), the
 audit of the examples of a layer, `/clean-examples:audit`
 ([use-cases/audit/specs/audit.md](use-cases/audit/specs/audit.md)), and the

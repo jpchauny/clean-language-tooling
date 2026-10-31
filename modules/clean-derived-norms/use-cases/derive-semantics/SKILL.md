@@ -5,8 +5,8 @@ description: Derive the semantics of Clean in Lean 4 (abstract syntax, typing, e
 
 # derive-semantics
 
-Implements [specs/derive-semantics.md](specs/derive-semantics.md) (DSM), with
-the rules of the module, CDN-1 to CDN-10, in [module.md](../../specs/module.md),
+Implements the meta spec [specs/derive-semantics.md](specs/derive-semantics.md) (DSM), with
+the meta rules of the meta module, CDN-1 to CDN-10, in [module.md](../../specs/module.md),
 and the interface of a derived-norms generator, NRM-1 to NRM-15, of the plugin
 `norms-management`. Where a step does what `derive-grammar` does, it says so;
 its `SKILL.md` is `${CLAUDE_PLUGIN_ROOT}/use-cases/derive-grammar/SKILL.md`.
@@ -27,14 +27,14 @@ uv run --with "lark[interegular]" python3 -I -B "$S" <command>
 
 It imports the module script, the code that it shares with the script of
 `derive-grammar`, the parser of the grammar among it (CDN-7 (The script of
-each use case of this module imports the module script, and no script of a
-use case imports the script of another use case)):
+each meta use case of this meta module imports the module script, and no script of a
+meta use case imports the script of another meta use case)):
 
 ```sh
 M="${CLAUDE_PLUGIN_ROOT}/scripts/derived_norms.py"
 ```
 
-What you read and write (DSM-1 (The use case reads only layer 2 and the
+What you read and write (DSM-1 (The meta use case reads only layer 2 and the
 grammar (NRM-3), and writes in the repository only under
 specs-derived/semantics/), DSM-3 (The output is one Lake project, one list
 of derived norms and one status file in the semantics folder)):
@@ -471,7 +471,7 @@ An empty file: nothing to do. Otherwise do step 5 of the SKILL.md of
 `jpchauny/clean-language-tooling` when missing); the title
 `clean-derived-norms derive-semantics: <ID> <changed | was retired | is gone>, its citation is stale (<ID>)`;
 the search for titles that begin with `clean-derived-norms derive-semantics: `;
-the spec `.../use-cases/derive-semantics/specs/derive-semantics.md` (the path
+the meta spec `.../use-cases/derive-semantics/specs/derive-semantics.md` (the path
 of each line, `use-cases/derive-semantics/derive_semantics.py`, comes from
 `stale-citations`); and
 the last line `Found while checking the Lean semantics of Clean
@@ -479,7 +479,7 @@ the last line `Found while checking the Lean semantics of Clean
 
 ## 6. Show
 
-End with (DSM-15 (The use case ends by showing what it did, the issues it
+End with (DSM-15 (The meta use case ends by showing what it did, the issues it
 opened, and the result of the check)):
 
 - The specs commit, the generator (plugin, version, tooling commit) and
@@ -500,5 +500,5 @@ opened, and the result of the check)):
 
 Do not list the derived norms new, changed and gone: the step of layer 2
 compares them for its report (NRM-11). When `/norms-management:build` runs
-this use case, this report is its part of the build's report; the build
+this meta use case, this report is its part of the build's report; the build
 commits and pushes (NRM-9).

@@ -1,16 +1,16 @@
 # clean-derived-norms
 
-Module `clean-derived-norms` of the app Clean Language: the derived norms of
-Clean in layer 2, one use case per type ([specs/module.md](specs/module.md)),
-each a derived-norms generator of the interface of `norms-management`
+Meta module `clean-derived-norms` of the meta app Clean Language: the derived norms of
+Clean in layer 2, one meta use case per type ([specs/module.md](specs/module.md)),
+each a derived-norms generator of the interface of the meta module `norms-management`
 (NRM-1 to NRM-15):
 
 - `/clean-derived-norms:derive-grammar`: the Lark grammar of Clean,
-  `specs-derived/grammar/` ([spec](use-cases/derive-grammar/specs/derive-grammar.md)).
+  `specs-derived/grammar/` ([meta spec](use-cases/derive-grammar/specs/derive-grammar.md)).
 - `/clean-derived-norms:derive-semantics`: the semantics of Clean in Lean 4
   (abstract syntax, typing, evaluation), a Lake project in
   `specs-derived/semantics/`, checked against every fragment and its expected
-  output ([spec](use-cases/derive-semantics/specs/derive-semantics.md)). It
+  output ([meta spec](use-cases/derive-semantics/specs/derive-semantics.md)). It
   runs after `derive-grammar`, and its check needs `lake`
   (`leanprover/lean4:v4.34.1`, through elan).
 
