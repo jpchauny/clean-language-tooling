@@ -48,9 +48,8 @@ of layers 0 and 1 of the project ([CLN-1](../../../specs/app.md#rules)).
 | Stub | A fake declaration: a function, a class, a value or any other name that an example declares in place of a name that it takes as defined outside its program, by a norm, a library or another spec, with a body, a value or a shape that no spec states. A declaration that is a real part of the program that the example shows is no stub. Illustrative: a function `integer tax(integer amount)` that returns 0 only so that an example of invoices builds is a stub; a variable set from a literal that the program then uses, or a function with its real body that the program defines and calls, is no stub. |
 | Focus comment | A comment of the code that sets apart the lines that an example is about from the lines that only complete its program. Illustrative: `// focus`, `// --- the example starts here ---`. |
 | Error code | A diagnostic code of the project: `PREFIX###`, a prefix of 3 to 6 upper-case ASCII letters and three decimal digits, `^[A-Z]{3,6}[0-9]{3}$`. |
-| Definition | A heading of level 3 to 6 of a spec file whose text starts with an error code followed by ` — ` and a title. Illustrative: `### SYN011 — Placeholder Not a Name`. |
+| Definition | An entry of the registry: a heading of level 4 under its heading `## 5. Code Index` whose text starts with an error code followed by ` — ` and a title, with the fields that follow it. Illustrative: `#### SYN011 — Placeholder Not a Name`. |
 | Registry | The spec file `specs/platform/error-codes.md` of the repository of layer 1. |
-| Registry row | A row of a table of the registry under its heading `## 5. Code Index` whose first cell holds an error code. |
 | Retired code | An error code in the first cell of a row of the table of the registry under its heading `## 6. Reserved Codes`. |
 | Violation | One place of a spec file, a line, that breaks one meta rule of this meta spec. Each violation names that meta rule. |
 
@@ -143,9 +142,9 @@ code means.
 
 ## Error codes
 
-- **CEX-14.** An error code is defined in the spec of the rule that gives it, by its definition. Until its definition is written, its registry row stands for it.
-- **CEX-15.** An error code has at most one definition in the spec files of both repositories together. Each definition of a code after the first, in code point order of path and then by line, is a violation at its heading.
-- **CEX-16.** The error code of a Clean example has a definition or a registry row in the spec files of both repositories together. An error code that has neither is a violation at the opening line.
+- **CEX-14.** An error code is defined once, by its definition in the registry: its name, its meaning, its exact message and its labels. No other spec file defines an error code or writes its message: it cites the code. A heading of another spec file that starts with an error code is the heading of the rule that gives it, and no definition. Rationale: one place for the code, its meaning and its message, so that no two texts of one message can disagree.
+- **CEX-15.** An error code has at most one definition. Each definition of a code after the first, by line, is a violation at its heading.
+- **CEX-16.** The error code of a Clean example has a definition. An error code that has none is a violation at the opening line.
 - **CEX-17.** A retired code is never the error code of a Clean example: it is a violation at the opening line.
 - **CEX-18.** A retired code never gets a definition: its definition is a violation at its heading.
 - **CEX-19.** A Clean example only cites its error code, with `code=`, and holds nothing else about it. Illustrative: no comment of the example gives the name, the meaning or the message of its error code.
@@ -159,8 +158,8 @@ code means.
 
 - **CEX-22.** The plugin has a hook before each run of the tools that write a file (complete list): Write, Edit, MultiEdit and NotebookEdit. When the file the tool writes is a spec file, the hook computes the text the file would have after the change, and checks it against the meta rules of CEX-20, except CEX-1 and CEX-3, which only the fuzzy search of the audit checks.
 - **CEX-23.** The hook refuses the change when the text after it holds a violation in a fenced block that is new, and names, for each, the line, the meta rule and the message of [CAU-8](../use-cases/audit/specs/audit.md#run-the-audit). A fenced block of the text after the change is new unless the text before holds a fenced block with the same info string and the same code, counted with multiplicity: a block that appears `n` times after and `m` times before, `m < n`, is new `n − m` times. A violation outside every new block never refuses a change. Rationale: moving or reordering blocks refuses nothing, copying a malformed block does, and the examples that exist are migrated with the audit while every other edit of their files goes on.
-- **CEX-24.** For CEX-15 to CEX-18 the hook reads the spec files of both repositories, as they are in their working trees, and the file being written as it will be after the change.
-- **CEX-25.** When the hook cannot read the other repository or the registry, it skips CEX-15 to CEX-18, checks the other meta rules, and says which repository or file it did not read and where it expected it.
+- **CEX-24.** For CEX-15 to CEX-18 the hook reads the registry as it is in the working tree of the repository of layer 1, or as it will be after the change when the file being written is the registry.
+- **CEX-25.** When the hook cannot read the registry, because the repository of layer 1 or the file is missing, it skips CEX-15 to CEX-18, checks the other meta rules, and says which repository or file it did not read and where it expected it.
 - **CEX-26.** The hook never changes a file.
 
 <a id="use-cases"></a>

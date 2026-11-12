@@ -14,7 +14,6 @@ INFO_VALID = re.compile(r"clean-language expect=valid")
 INFO_SYNTAX = re.compile(r"clean-language expect=syntax-error code=([A-Z]{3,6}[0-9]{3}) line=(0|[1-9][0-9]*)")
 INFO_ERROR = re.compile(r"clean-language expect=error code=([A-Z]{3,6}[0-9]{3})")
 FENCE_OPEN = re.compile(r"^( *)(`{3,}|~{3,})(.*)$")  # at most 3 spaces: checked in blocks()
-DEFINITION = re.compile(r"^ {0,3}#{3,6}[ \t]+([A-Z]{3,6}[0-9]{3}) — \S")
 CODE_TOKEN = re.compile(r"\b([A-Z]{3,6}[0-9]{3})\b")
 FILE_LINE = re.compile(r"^// file:")  # CEX term "File line"
 FILE_LINE_PATH = "// file: "  # CEX term "Path of a file line": the text after it
@@ -47,10 +46,10 @@ MESSAGES = {  # CAU-8
     "CEX-10": "code at column 1 outside a section",
     "CEX-11": "a file line is // file: at column 1, one space and a path of the form of CEX-11",
     "CEX-13": "a space in the indentation",
-    "CEX-15": "a second definition of the error code",
-    "CEX-16": "the error code has neither a definition nor a registry row",
+    "CEX-15": "a second definition of the error code in the registry",
+    "CEX-16": "the error code has no definition in the registry",
     "CEX-17": "the error code is retired",
-    "CEX-18": "a definition of a retired code",
+    "CEX-18": "a definition of a retired code in the registry",
     "CEX-27": "every Clean example is followed right after by one expected output block",
     "CEX-28": "the info string of an expected output block is exactly clean-language-output",
     "CEX-30": "the program prints nothing with print, or its expected output block is empty",
@@ -471,6 +470,8 @@ def suspect_spans(text):
             s = m.group(2).strip()
             if len(s.split()) < 2 and not re.search(r"\(.+\)", s):
                 continue  # one token: not Clean code
+            if STRING.fullmatch(s):
+                continue  # a quoted text, such as a message of the registry
             if reads_as_clean(s, assignment=False):
                 out.append(k)
                 break
@@ -534,72 +535,62 @@ def read(path):
         return f.read()
 
 
-def headings(text):
-    """[(line, code)] of the definitions of a text, outside its fenced blocks and HTML comments."""
+ENTRY = re.compile(r"^ {0,3}####[ \t]+([A-Z]{3,6}[0-9]{3}) — \S")
+
+
+def registry(text):
+    """([(line, code)] of the definitions, retired codes) of the registry. Spec: CEX terms Definition, Retired code."""
     lines = split_lines(text)
     body = contents(lines)
     fenced = set()
     for b in blocks(text):
         if b.fenced:
-            fenced.update(range(b.line, b.line + len(b.code) + 2))
-    out = []
+            fenced.update(range(b.line, b.end + 1))
+    entries, retired, section = [], set(), None
     for k, line in enumerate(body, 1):
-        m = DEFINITION.match(line) if line is not None else None
-        if m and k not in fenced:
-            out.append((k, m.group(1)))
-    return out
-
-
-def registry(text):
-    """(codes of registry rows, retired codes) of the registry."""
-    rows, retired, section = set(), set(), None
-    for line in split_lines(text):
-        if line.startswith("## "):
-            section = "rows" if line.startswith("## 5. Code Index") else "retired" if line.startswith("## 6. Reserved Codes") else None
+        if line is None or k in fenced:
             continue
-        if section and line.startswith("|"):
+        if line.startswith("## "):
+            section = "entries" if line.startswith("## 5. Code Index") else "retired" if line.startswith("## 6. Reserved Codes") else None
+            continue
+        if section == "entries":
+            m = ENTRY.match(line)
+            if m:
+                entries.append((k, m.group(1)))
+        elif section == "retired" and line.startswith("|"):
             cells = line.split("|")
             if len(cells) > 2:
                 m = CODE_TOKEN.search(cells[1])
                 if m:
-                    (rows if section == "rows" else retired).add(m.group(1))
-    return rows, retired
+                    retired.add(m.group(1))
+    return entries, retired
 
 
 class Codes:
-    """The definitions, registry rows and retired codes of both repositories. Spec: CEX-14 to CEX-18, CAU-7."""
+    """The definitions and retired codes of the registry of layer 1. Spec: CEX-14 to CEX-18, CEX-24, CAU-7."""
 
     def __init__(self, repos, overrides=None, layer1=None):
         """repos: [(label, root)], label None for the working repository; layer1: the root of layer 1;
-        overrides: {absolute path: text}."""
+        overrides: {absolute path: text}, the file being written."""
         layer1 = os.path.realpath(layer1) if layer1 else None
         overrides = overrides or {}
-        self.definitions = []  # (label, path, line, code), in code point order of path then line
-        self.rows, self.retired, self.has_registry = set(), set(), False
-        for label, root in repos:
-            root = os.path.realpath(root)
-            paths = spec_files(root)
-            for full in overrides:  # a file that does not exist yet
-                p = os.path.relpath(full, root)
-                if not p.startswith("..") and p.endswith(".md") and p not in paths:
-                    paths.append(p)
-            for p in sorted(paths):
-                full = os.path.join(root, p)
-                text = overrides.get(full)
-                if text is None:
-                    try:
-                        text = read(full)
-                    except OSError:
-                        continue
-                for line, code in headings(text):
-                    self.definitions.append((label, p, line, code))
-                if p == REGISTRY and root == layer1:
-                    self.rows, self.retired = registry(text)
-                    self.has_registry = True
-        self.definitions.sort(key=lambda d: (d[1], d[2]))
+        self.definitions, self.retired, self.has_registry = [], set(), False  # definitions: (label, path, line, code)
+        label = next((lb for lb, root in repos if layer1 and os.path.realpath(root) == layer1), None)
+        if layer1 is None:
+            return
+        full = os.path.join(layer1, REGISTRY)
+        text = overrides.get(full)
+        if text is None:
+            try:
+                text = read(full)
+            except OSError:
+                return
+        entries, self.retired = registry(text)
+        self.definitions = [(label, REGISTRY, line, code) for line, code in entries]
+        self.has_registry = True
 
     def defined(self):
-        return {d[3] for d in self.definitions} | self.rows
+        return {d[3] for d in self.definitions}
 
     def violations(self):
         """[(label, path, line, rule)] of CEX-15 and CEX-18."""

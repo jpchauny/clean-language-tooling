@@ -19,7 +19,7 @@ A meta use case of the meta module `clean-examples`, specified in [module.md](..
 | Suspect | A fenced block, an indented code block (CommonMark 4.4) or a code span (CommonMark 6.1) of a selected file, outside every Clean example and expected output block, that CAU-6 takes for Clean code. A suspect is not a violation: a person decides. |
 | Finding | One violation or one suspect in the report. |
 
-The terms repository, spec file, Clean code, fenced block, info string, Clean example, expected output block, blank line, opening line, attribute, code, code line, section line, file line, path of a file line, file of a program, program, error code, definition, registry, registry row, retired code and violation are those of [module.md](../../../specs/module.md#terms).
+The terms repository, spec file, Clean code, fenced block, info string, Clean example, expected output block, blank line, opening line, attribute, code, code line, section line, file line, path of a file line, file of a program, program, error code, definition, registry, retired code and violation are those of [module.md](../../../specs/module.md#terms).
 
 ## Run the audit
 
@@ -107,9 +107,9 @@ Feature: Audit the Clean examples of a layer
       When the audit runs
       Then the report holds no violation of CEX-36 to CEX-39 for it
 
-    Scenario: An error code with neither a definition nor a registry row
+    Scenario: An error code with no definition
       Given a Clean example with "expect=error code=SEM999"
-      And no spec file of layer 0 or layer 1 holds a definition or a registry row of "SEM999"
+      And the registry holds no definition of "SEM999"
       When the audit runs
       Then the report holds a violation of CEX-16 at its opening line
 
@@ -145,7 +145,7 @@ Feature: Audit the Clean examples of a layer
 
   Rule: CAU-6 Clean code outside a Clean example is a suspect
     The fuzzy search reads, outside every Clean example and expected output block, the fenced blocks with the info string "text" or none, the indented code blocks, and the code spans of the prose. A fenced block with any other info string, such as "json", "rust" or "wit", is no suspect: its info string says what it holds.
-    A block is a suspect when one of these holds (complete list): read as the code of a Clean example, one of its lines is a section line followed, on the next line, by a line that starts with a tab or a space and is not blank; one of its lines reads as Clean code; it holds two lines or more, and each is one name that is not a keyword of Clean, or one literal. A code span is a suspect when it reads as Clean code, an assignment left out, and holds two words or more between blanks, or a call with arguments.
+    A block is a suspect when one of these holds (complete list): read as the code of a Clean example, one of its lines is a section line followed, on the next line, by a line that starts with a tab or a space and is not blank; one of its lines reads as Clean code; it holds two lines or more, and each is one name that is not a keyword of Clean, or one literal. A code span is a suspect when it reads as Clean code, an assignment left out, and holds two words or more between blanks, or a call with arguments; a code span that holds only a string literal is quoted text, such as a message of the registry, and no suspect.
     An expression is made of names, literals, calls, member accesses, lists and the operators of Clean; the operators "and", "or", "is", "isnt", "default" and "onError" stand between blanks. A line reads as Clean code when, its comments left out and its blanks at both ends removed, it is one of these forms (complete list): a declaration, a type of Clean followed by a name; "print" or "printHere" followed by arguments in parentheses, or by ":"; "return", alone or followed by an expression; "if" or "while" followed by an expression that is not one keyword of Clean; "iterate", a name, "in" and an expression, with or without "to" and an expression; "not" and an expression; a call; an expression with an operator; a name followed by "!"; a literal; a list; an assignment of an expression to a name. A line that holds, outside its string literals, a dash between a letter or digit and a letter, "_", "::", "->", "=>", "$", "--", or a word between "<" and ">" that is no type of Clean, never reads as Clean code: those mark another language, a path or a command.
 
     Scenario Outline: A suspect
@@ -179,10 +179,10 @@ Feature: Audit the Clean examples of a layer
         | a code span "length()" or "integer" in the prose                                     |
         | a code span "emit = check" in the prose                                              |
 
-  Rule: CAU-7 The audit reads the definitions and the registry in both repositories
-    Scenario: Definitions of the other repository
+  Rule: CAU-7 The audit reads the definitions in the registry of layer 1
+    Scenario: The registry
       When the audit checks CEX-15 to CEX-18
-      Then it reads the spec files of the working repository and of the other repository, each in its working tree
+      Then it reads the definitions and the retired codes of the registry, in the working tree of the repository of layer 1, whichever repository it runs in
     Scenario: The other repository is missing
       Given the other repository is not where "project.json" says
       When the audit runs
@@ -221,10 +221,10 @@ Feature: Audit the Clean examples of a layer
         | CEX-10 | code at column 1 outside a section                                      |
         | CEX-11 | a file line is // file: at column 1, one space and a path of the form of CEX-11 |
         | CEX-13 | a space in the indentation                                              |
-        | CEX-15 | a second definition of the error code                                   |
-        | CEX-16 | the error code has neither a definition nor a registry row              |
+        | CEX-15 | a second definition of the error code in the registry                   |
+        | CEX-16 | the error code has no definition in the registry                        |
         | CEX-17 | the error code is retired                                               |
-        | CEX-18 | a definition of a retired code                                          |
+        | CEX-18 | a definition of a retired code in the registry                          |
         | CEX-27 | every Clean example is followed right after by one expected output block |
         | CEX-28 | the info string of an expected output block is exactly clean-language-output |
         | CEX-30 | the program prints nothing with print, or its expected output block is empty |

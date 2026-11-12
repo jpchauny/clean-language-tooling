@@ -44,10 +44,14 @@ REGISTRY = """# Error Code Registry
 
 ## 5. Code Index
 
-| Code | Name |
-|---|---|
-| `SYN011` | `PlaceholderNotAName` |
-| [SEM004 (not specified yet)](absent:x.md) | `InvalidOperationForType` |
+#### SYN011 — Placeholder Not a Name
+
+- **Name:** `PlaceholderNotAName`
+- **Message:** `"x"`
+
+#### SEM004 — Invalid Operation for Type
+
+- **Name:** `InvalidOperationForType`
 
 ## 6. Reserved Codes
 
@@ -250,22 +254,33 @@ class ErrorCodes(unittest.TestCase):
         text = md("clean-language expect=syntax-error code=SYN006 line=1", "start:")
         self.assertEqual(rules(text, self.CODES), [(1, "CEX-17")])
 
-    def test_registry_rows_and_retired(self):
-        rows, retired = ex.registry(REGISTRY)
-        self.assertEqual((rows, retired), ({"SYN011", "SEM004"}, {"SYN006"}))
+    def test_registry_definitions_and_retired(self):
+        entries, retired = ex.registry(REGISTRY)
+        self.assertEqual(([c for _, c in entries], retired), (["SYN011", "SEM004"], {"SYN006"}))
+
+    def test_cex14_only_the_registry_defines(self):
+        p = Project()
+        try:
+            p.write(p.l0, "specs/a.md", "### SEM777 — Something\n")
+            p.write(p.l1, "specs/b.md", "#### SEM778 — Other\n")
+            codes = ex.Codes([(None, p.l0), ("o/specs", p.l1)], layer1=p.l1)
+            self.assertEqual(codes.defined(), {"SYN011", "SEM004"})
+        finally:
+            p.close()
 
     def test_cex15_cex18_definitions(self):
         p = Project()
         try:
-            p.write(p.l0, "specs/a.md", "### SYN011 — Placeholder Not a Name\n")
-            p.write(p.l1, "specs/b.md", "#### SYN011 — Placeholder Not a Name\n\n### SYN006 — Old\n")
+            p.write(p.l1, "specs/platform/error-codes.md", REGISTRY.replace(
+                "## 6. Reserved Codes", "#### SYN011 — Again\n\n#### SYN006 — Old\n\n## 6. Reserved Codes"))
             codes = ex.Codes([(None, p.l0), ("o/specs", p.l1)], layer1=p.l1)
-            self.assertEqual(codes.violations(), [("o/specs", "specs/b.md", 1, "CEX-15"), ("o/specs", "specs/b.md", 3, "CEX-18")])
+            self.assertEqual([(v[2], v[3]) for v in codes.violations()], [(14, "CEX-15"), (16, "CEX-18")])
         finally:
             p.close()
 
-    def test_definition_inside_a_fenced_block_is_none(self):
-        self.assertEqual(ex.headings("```text\n### SYN011 — x\n```\n"), [])
+    def test_definition_inside_a_fenced_block_or_another_section_is_none(self):
+        text = "## 5. Code Index\n\n```text\n#### SYN011 — x\n```\n\n### SYN012 — level 3\n\n## 4. Other\n\n#### SYN013 — y\n"
+        self.assertEqual(ex.registry(text)[0], [])
 
 
 class Markdown(unittest.TestCase):
@@ -294,13 +309,13 @@ class Markdown(unittest.TestCase):
         self.assertEqual(rules(md("clean-language expect=syntax-error code=SYN001 line=0", "start:")), [(1, "CEX-6")])
 
     def test_definition_headings(self):
-        self.assertEqual(ex.headings("   ### SYN011 — P\n###  SYN012 — X\n###\tSYN013 — Y\n"),
-                         [(1, "SYN011"), (2, "SYN012"), (3, "SYN013")])
+        text = "## 5. Code Index\n   #### SYN011 — P\n####  SYN012 — X\n####\tSYN013 — Y\n"
+        self.assertEqual(ex.registry(text)[0], [(2, "SYN011"), (3, "SYN012"), (4, "SYN013")])
 
     def test_quote_and_html_comment(self):
         self.assertEqual(rules("> ```clean\n> start:\n> ```\n"), [(1, "CEX-2")])
         self.assertEqual(rules("<!--\n```clean\nstart:\n```\n### SYN011 — X\n-->\n"), [])
-        self.assertEqual(ex.headings("<!--\n### SYN011 — X\n-->\n"), [])
+        self.assertEqual(ex.registry("## 5. Code Index\n<!--\n#### SYN011 — X\n-->\n")[0], [])
 
     def test_html_comment_inside_a_fenced_block_is_code(self):
         self.assertEqual(rules("```html\n<!-- a -->\n<!--\n```\n\n```clean\nstart:\n```\n"), [(6, "CEX-2")])
@@ -415,6 +430,7 @@ class Suspects(unittest.TestCase):
         self.assertEqual(ex.suspect_spans("- item `a + b`\n\n> quote `a + b`\n\n<!--\n`a + b`\n-->\n"), [1, 3])
         self.assertEqual(ex.suspect_spans("para\n\n    integer x = 1\nNext `a + b` here\n"), [4])
         self.assertEqual(ex.suspect_spans("`a::b + c` `f(x) -> y` `run <path> + x`\n"), [])
+        self.assertEqual(ex.suspect_spans('- **Message:** `"this <string|comment> is never closed"`\n'), [])
 
     def test_cau6_code_spans(self):
         text = "a `value default fallback` b\n\nc `a + b`, `print(x)` d\n\n`length()` `integer` `start:` `42`\n\n" \
@@ -450,7 +466,7 @@ class Audit(unittest.TestCase):
             "",
             "## Violations",
             "",
-            "- specs/a.md:3 · CEX-16 · the error code has neither a definition nor a registry row",
+            "- specs/a.md:3 · CEX-16 · the error code has no definition in the registry",
             "- specs/a.md:3 · CEX-27 · every Clean example is followed right after by one expected output block",
             "- specs/a.md:4 · CEX-10 · code at column 1 outside a section",
             "- specs/z.md:1 · CEX-2 · the info string clean is replaced by clean-language",
@@ -549,9 +565,13 @@ class Audit(unittest.TestCase):
 
     def test_cau7_definition_in_the_other_layer(self):
         p = self.p
-        p.write(p.l0, "specs/s.md", "### SEM777 — Something\n")
-        p.write(p.l1, "specs/a.md", md("clean-language expect=error code=SEM777", "start:", "\tprint(1)") + md("clean-language-output", "error[SEM777]: x"))
+        p.write(p.l1, "specs/a.md", md("clean-language expect=error code=SEM004", "start:", "\tprint(1)") + md("clean-language-output", "error[SEM004]: x"))
         self.assertIn("0 violations", audit.run(p.l1))
+        p.write(p.l0, "specs/b.md", md("clean-language expect=error code=SEM004", "start:") + md("clean-language-output", "error[SEM004]: x"))
+        self.assertIn("0 violations", audit.run(p.l0))
+        p.write(p.l0, "specs/c.md", "### SEM777 — Only a rule heading\n\n" + md("clean-language expect=error code=SEM777", "start:")
+                + md("clean-language-output", "error[SEM777]: x"))
+        self.assertIn("- specs/c.md:3 · CEX-16", audit.run(p.l0))
 
 
 class Hook(unittest.TestCase):
