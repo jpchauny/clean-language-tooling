@@ -51,14 +51,15 @@ MESSAGES = {  # CAU-8
     "CEX-16": "the error code has neither a definition nor a registry row",
     "CEX-17": "the error code is retired",
     "CEX-18": "a definition of a retired code",
-    "CEX-27": "an expected output block goes right after a Clean example with expect=valid, one at most",
+    "CEX-27": "every Clean example is followed right after by one expected output block",
     "CEX-28": "the info string of an expected output block is exactly clean-language-output",
+    "CEX-30": "the program prints nothing with print, or its expected output block is empty",
     "CEX-36": "code before the first file line",
     "CEX-37": "a second file with the same path",
     "CEX-38": "a valid program of several files has start: in exactly one file",
     "CEX-39": "the line of a syntax-error is a file line or before the first file line",
 }
-SUSPECT_MESSAGE = "looks like a Clean source file outside a Clean example"
+SUSPECT_MESSAGE = "looks like Clean code outside a Clean example"
 
 
 class Block:
@@ -357,35 +358,123 @@ def check_block(block, codes):
     return found
 
 
+PRINT = re.compile(r"\bprint(Here)?\b")
+STRING = re.compile(r'"(?:[^"\\]|\\.)*"')
+
+
 def check_outputs(text):
-    """The violations of the expected output blocks of a text: [(line of the file, rule ID)]. Spec: CEX-27, CEX-28."""
+    """The violations of the Clean examples and expected output blocks of a text about their output:
+    [(line of the file, rule ID)]. Spec: CEX-27, CEX-28, CEX-30."""
     body = contents(split_lines(text))
     fenced = [b for b in blocks(text) if b.fenced]
     found = []
+
+    def right_after(first, second):
+        return all(line is not None and not line.strip(" \t") for line in body[first.end:second.line - 1])
+
     for k, b in enumerate(fenced):
+        nxt = fenced[k + 1] if k + 1 < len(fenced) else None
+        if b.is_example():
+            if nxt is None or not nxt.is_output() or not right_after(b, nxt):
+                found.append((b.line, "CEX-27"))
+            parsed = parse_info(b.info)
+            lexed = lex_program(b.code, files_of_program(b.code)) if b.code else []
+            if parsed is not None and parsed[0] == "valid" and not any(PRINT.search(STRING.sub('""', lx[0])) for lx in lexed):
+                found.append((b.line, "CEX-30"))
+            continue
         if not b.is_output():
             continue
         if b.info != OUTPUT_INFO:
             found.append((b.line, "CEX-28"))
         before = fenced[k - 1] if k else None
-        between = body[before.end:b.line - 1] if before else None
-        parsed = parse_info(before.info) if before is not None and before.is_example() else None
-        if before is None or parsed is None or parsed[0] != "valid" \
-                or any(line is None or line.strip(" \t") for line in between):
+        if before is None or not before.is_example() or not right_after(before, b):
             found.append((b.line, "CEX-27"))
+        if not b.code:
+            found.append((b.line, "CEX-30"))
     return found
 
 
+# CAU-6: the forms of a line that reads as Clean code.
+_TYPE = (r"(?:boolean|bytes|datetime|duration|integer|number|string|any|void|list|pairs|matrix)"
+         r"(?::[0-9]+u?)?(?:<[^<>]*(?:<[^<>]*>)?[^<>]*>)?(?:\.[a-z]+)*\??")
+_NAME = r"[A-Za-z][A-Za-z0-9_]*"
+_LIT = (r"(?:-?(?:0x[0-9a-fA-F]+|0b[01]+|0o[0-7]+|(?:[0-9]+(?:\.[0-9]+)?|\.[0-9]+)(?:e[+-]?[0-9]+)?)(?:ms|s|min|h)?"
+        r"|\"(?:[^\"\\]|\\.)*\"|true|false|none)")
+_LIST = r"\[[^\[\]]*(?:\[[^\[\]]*\][^\[\]]*)*\]"
+_ATOM = (r"(?:" + _LIT + "|" + _NAME + r"(?:\([^()]*\))?!?(?:\." + _NAME + r"(?:\([^()]*\))?!?)*|"
+         r"\"(?:[^\"\\]|\\.)*\"\." + _NAME + r"\([^()]*\)|" + _LIST + ")")
+_OP = r"(?:\s*(?:\+|-|\*|/|%|\^|==|!=|<=|>=|<|>)\s*|\s+(?:and|or|isnt|is|default|onError)\s+)"
+_EXPR = _ATOM + r"(?:" + _OP + _ATOM + r")*"
+_ELEMENT = r"(?:" + _LIT + "|" + _NAME + r"|\[[^\[\]]*\])"
+CLEAN_FORMS = [re.compile(p) for p in (
+    r"^" + _TYPE + r"\s+" + _NAME + r"(?:\s*=.*|\s*\(.*\).*)?$",  # a declaration
+    r"^(?:print|printHere)\s*(?:\(.*\)|:)$",
+    r"^return(?:\s+" + _EXPR + r")?$",
+    r"^(?:if|while)\s+" + _EXPR + r"$",
+    r"^iterate\s+" + _NAME + r"\s+in\s+" + _EXPR + r"(?:\s+to\s+" + _EXPR + r")?$",
+    r"^" + _ATOM + r"(?:" + _OP + _ATOM + r")+$",  # an expression with an operator
+    r"^not\s+" + _EXPR + r"$",
+    r"^" + _NAME + r"(?:\." + _NAME + r")*\([^()]*\)(?:\." + _NAME + r"\([^()]*\))*!?$",  # a call
+    r"^\"(?:[^\"\\]|\\.)*\"\." + _NAME + r"\(.*\)$",
+    r"^" + _NAME + r"!$",
+    r"^" + _LIT + r"$",
+    r"^\[\s*(?:" + _ELEMENT + r"(?:\s*,\s*" + _ELEMENT + r")*)?\s*\]$",  # a list
+)]
+ASSIGNMENT = re.compile(r"^" + _NAME + r"(?:\[[^\]]*\])?(?:\." + _NAME + r")*\s*=\s*" + _EXPR + r"$")
+_TYPES = r"(?:boolean|bytes|datetime|duration|integer|number|string|any|void|list|pairs|matrix)"
+NOT_CLEAN = re.compile(r"[A-Za-z0-9]-[A-Za-z]|_|::|->|=>|\$|--|<(?!" + _TYPES + r">)[a-z]+>")
+KEYWORDS = set(
+    "after always and any assert background base before break can class compiletime constant constructor continue "
+    "default else error fails false function functions handles host if import in is isnt iterate later libraries "
+    "namespace none not onError or print public reset return spec start state tests to true watch while with".split())
+SPAN = re.compile(r"(`+)(.+?)\1")
+
+
+def reads_as_clean(line, assignment=True):
+    """CAU-6: a line, its comments left out, reads as Clean code."""
+    s = line.strip()
+    if not s or NOT_CLEAN.search(re.sub(r'"(?:[^"\\]|\\.)*"', '""', s)):
+        return False
+    m = re.match(r"^(?:if|while)\s+([A-Za-z]+)$", s)
+    if m and m.group(1) in KEYWORDS:
+        return False
+    return any(p.match(s) for p in CLEAN_FORMS) or (assignment and bool(ASSIGNMENT.match(s)))
+
+
 def is_suspect(block):
-    """CAU-6."""
-    if block.is_example() or block.is_old() or block.is_output():
+    """CAU-6, for a fenced block or an indented code block."""
+    if block.is_example() or block.is_old() or block.is_output() or (block.fenced and block.info not in ("", "text")):
         return False
     lexed = lex(block.code)
     for k in range(len(block.code) - 1):
         nxt = block.code[k + 1]
         if is_section_line(block.code[k], lexed[k]) and nxt[:1] in (" ", "\t") and nxt.strip():
             return True
-    return False
+    lines = [lx[0].strip() for lx in lexed if lx[0].strip()]
+    if any(reads_as_clean(line) for line in lines):
+        return True
+    return len(lines) >= 2 and all(re.fullmatch(_NAME + "|" + _LIT, line) and line not in KEYWORDS and "_" not in line
+                                   for line in lines)
+
+
+def suspect_spans(text):
+    """CAU-6, for the code spans of the prose: [line of the file]."""
+    body = contents(split_lines(text))
+    inside = set()
+    for b in blocks(text):
+        inside.update(range(b.line, (b.end if b.fenced else b.line + len(b.code) - 1) + 1))
+    out = []
+    for k, line in enumerate(body, 1):
+        if line is None or k in inside:
+            continue
+        for m in SPAN.finditer(line):
+            s = m.group(2).strip()
+            if len(s.split()) < 2 and not re.search(r"\(.+\)", s):
+                continue  # one token: not Clean code
+            if reads_as_clean(s, assignment=False):
+                out.append(k)
+                break
+    return out
 
 
 # ---------------------------------------------------------------- repositories

@@ -16,10 +16,10 @@ A meta use case of the meta module `clean-examples`, specified in [module.md](..
 | Working repository | The git repository that holds the working directory. Its entry of `project.json` is found as [ORC-21](https://github.com/jpchauny/indra-software-factory/blob/main/apps/indra-software-factory/modules/project-management/specs/module.md#where-the-repositories-are) says. |
 | Other repository | The repository of layer 1 when the working repository is that of layer 0, and that of layer 0 when it is that of layer 1. |
 | Selected file | A spec file of the working repository that the argument selects (CAU-3). |
-| Suspect | A fenced block or an indented code block (CommonMark 4.4) of a selected file that is neither a Clean example nor an expected output block, and that CAU-6 takes for a Clean source file. A suspect is not a violation: a person decides. |
+| Suspect | A fenced block, an indented code block (CommonMark 4.4) or a code span (CommonMark 6.1) of a selected file, outside every Clean example and expected output block, that CAU-6 takes for Clean code. A suspect is not a violation: a person decides. |
 | Finding | One violation or one suspect in the report. |
 
-The terms repository, spec file, fenced block, info string, Clean example, expected output block, blank line, opening line, attribute, code, code line, section line, Clean source file, file line, path of a file line, file of a program, program, error code, definition, registry, registry row, retired code and violation are those of [module.md](../../../specs/module.md#terms).
+The terms repository, spec file, Clean code, fenced block, info string, Clean example, expected output block, blank line, opening line, attribute, code, code line, section line, file line, path of a file line, file of a program, program, error code, definition, registry, registry row, retired code and violation are those of [module.md](../../../specs/module.md#terms).
 
 ## Run the audit
 
@@ -27,7 +27,7 @@ The terms repository, spec file, fenced block, info string, Clean example, expec
 Feature: Audit the Clean examples of a layer
   In order to keep every Clean example of the specs well formed and unambiguous
   As a person who writes the specs of layer 0 or layer 1 of the project
-  I want a report of every place that breaks a meta rule of the Clean examples, and of every block that looks like Clean code outside an example
+  I want a report of every place that breaks a meta rule of the Clean examples, and of every place that looks like Clean code outside an example
 
   Rule: CAU-1 The audit runs only when the user asks for it
     Scenario: Invocation
@@ -64,7 +64,7 @@ Feature: Audit the Clean examples of a layer
       When the audit runs
       Then it says which of the three holds, and checks nothing
 
-  Rule: CAU-5 The audit checks every Clean example of every selected file against the meta rules of CEX-20, every fenced block against CEX-2, and every expected output block against CEX-27 and CEX-28
+  Rule: CAU-5 The audit checks every Clean example of every selected file against the meta rules of CEX-20, every fenced block against CEX-2, and every Clean example and expected output block against CEX-27, CEX-28 and CEX-30
     Scenario: A malformed opening line
       Given "specs/language/lexical.md" holds at line 40 a fenced block with the info string "clean-language expect=syntax-error code=SYN011"
       When the audit runs
@@ -114,7 +114,7 @@ Feature: Audit the Clean examples of a layer
       Then the report holds a violation of CEX-16 at its opening line
 
     Scenario Outline: An expected output block
-      Given a selected file holds at line 20 a Clean example with "<opening line>", then <between>, then an expected output block with the info string "<info string>"
+      Given a selected file holds at line 20 a Clean example with "<opening line>" whose code prints with "print", then <between>, then an expected output block with the info string "<info string>"
       When the audit runs
       Then the report holds <violations> at the opening line of the expected output block
 
@@ -123,16 +123,30 @@ Feature: Audit the Clean examples of a layer
         | clean-language expect=valid        | one blank line                     | clean-language-output      | no violation               |
         | clean-language expect=valid        | no line                            | clean-language-output      | no violation               |
         | clean-language expect=valid        | the line "It prints:"              | clean-language-output      | a violation of CEX-27      |
-        | clean-language expect=error code=SEM004 | one blank line                | clean-language-output      | a violation of CEX-27      |
+        | clean-language expect=error code=SEM004 | one blank line                | clean-language-output      | no violation               |
         | clean-language expect=valid        | one blank line                     | clean-language-output text | a violation of CEX-28      |
+
+    Scenario Outline: A Clean example with no expected output, or that prints nothing
+      Given a selected file holds at line 20 a Clean example <example>
+      When the audit runs
+      Then the report holds <violations>
+
+      Examples:
+        | example                                                                 | violations                                   |
+        | that prints with "print" and that no expected output block follows      | a violation of CEX-27 at line 20             |
+        | that prints with "print", followed by an expected output block with no line | a violation of CEX-30 at the opening line of that block |
+        | with "expect=valid" whose code holds "print" only in a comment, followed by an expected output block | a violation of CEX-30 at line 20 |
+        | with "expect=syntax-error", no "print", followed by an expected output block with its error message | no violation |
 
     Scenario: A second expected output block
       Given a Clean example with "expect=valid" is followed by two expected output blocks, with one blank line before each
       When the audit runs
       Then the report holds no violation at the first and a violation of CEX-27 at the opening line of the second
 
-  Rule: CAU-6 A fenced block that is neither a Clean example nor an expected output block, or an indented code block, is a suspect when its lines read as a Clean source file
-    Its lines read as a Clean source file when, read as the code of a Clean example, one of its lines is a section line that is followed, on the next line, by a line that starts with a tab or a space and is not blank.
+  Rule: CAU-6 Clean code outside a Clean example is a suspect
+    The fuzzy search reads, outside every Clean example and expected output block, the fenced blocks with the info string "text" or none, the indented code blocks, and the code spans of the prose. A fenced block with any other info string, such as "json", "rust" or "wit", is no suspect: its info string says what it holds.
+    A block is a suspect when one of these holds (complete list): read as the code of a Clean example, one of its lines is a section line followed, on the next line, by a line that starts with a tab or a space and is not blank; one of its lines reads as Clean code; it holds two lines or more, and each is one name that is not a keyword of Clean, or one literal. A code span is a suspect when it reads as Clean code, an assignment left out, and holds two words or more between blanks, or a call with arguments.
+    An expression is made of names, literals, calls, member accesses, lists and the operators of Clean; the operators "and", "or", "is", "isnt", "default" and "onError" stand between blanks. A line reads as Clean code when, its comments left out and its blanks at both ends removed, it is one of these forms (complete list): a declaration, a type of Clean followed by a name; "print" or "printHere" followed by arguments in parentheses, or by ":"; "return", alone or followed by an expression; "if" or "while" followed by an expression that is not one keyword of Clean; "iterate", a name, "in" and an expression, with or without "to" and an expression; "not" and an expression; a call; an expression with an operator; a name followed by "!"; a literal; a list; an assignment of an expression to a name. A line that holds, outside its string literals, a dash between a letter or digit and a letter, "_", "::", "->", "=>", "$", "--", or a word between "<" and ">" that is no type of Clean, never reads as Clean code: those mark another language, a path or a command.
 
     Scenario Outline: A suspect
       Given a selected file holds, outside every Clean example, <block>
@@ -144,6 +158,10 @@ Feature: Audit the Clean examples of a layer
         | a fenced block with no info string that holds "start:" and, on the next line, a tab and "print(1)" |
         | a fenced block with the info string "text" that holds "functions:" and an indented line after it |
         | an indented code block that holds "class Point" and an indented line after it         |
+        | a fenced block with the info string "text" that holds "a + b       // Addition"       |
+        | a fenced block with the info string "text" that holds "integer count = 0"             |
+        | a fenced block with the info string "text" that holds "x" and, on the next line, "count" |
+        | a code span "value default fallback" in the prose                                    |
 
     Scenario Outline: Not a suspect
       Given a selected file holds <block>
@@ -156,6 +174,10 @@ Feature: Audit the Clean examples of a layer
         | a fenced block with the info string "text" that holds "start:" and no indented line after it |
         | a fenced block with the info string "clean", which CEX-2 already reports               |
         | an expected output block that holds "start:" and, on the next line, a tab and "print(1)" |
+        | a fenced block with the info string "json" that holds "a + b"                         |
+        | a fenced block with the info string "text" that holds "memory_may_move = false"       |
+        | a code span "length()" or "integer" in the prose                                     |
+        | a code span "emit = check" in the prose                                              |
 
   Rule: CAU-7 The audit reads the definitions and the registry in both repositories
     Scenario: Definitions of the other repository
@@ -183,7 +205,7 @@ Feature: Audit the Clean examples of a layer
 
         ## Suspects
 
-        - <path>:<line> · looks like a Clean source file outside a Clean example
+        - <path>:<line> · looks like Clean code outside a Clean example
         """
       And "<owner>/<name>" is that of the entry of the working repository in "project.json"
       And "<path>" is relative to the root of the repository that holds the file, with "/" between its parts, prefixed by "<owner>/<name>:" when that is the other repository
@@ -203,8 +225,9 @@ Feature: Audit the Clean examples of a layer
         | CEX-16 | the error code has neither a definition nor a registry row              |
         | CEX-17 | the error code is retired                                               |
         | CEX-18 | a definition of a retired code                                          |
-        | CEX-27 | an expected output block goes right after a Clean example with expect=valid, one at most |
+        | CEX-27 | every Clean example is followed right after by one expected output block |
         | CEX-28 | the info string of an expected output block is exactly clean-language-output |
+        | CEX-30 | the program prints nothing with print, or its expected output block is empty |
         | CEX-36 | code before the first file line                                         |
         | CEX-37 | a second file with the same path                                        |
         | CEX-38 | a valid program of several files has start: in exactly one file         |

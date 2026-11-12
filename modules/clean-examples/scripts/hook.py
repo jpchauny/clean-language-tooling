@@ -73,7 +73,7 @@ def main(stdin):
     new = ex.new_blocks(before, after)
     found = {(line, rule) for b in new for line, rule in ex.check_block(b, pair)}
     opening_lines = {b.line for b in new}
-    found |= {(line, rule) for line, rule in ex.check_outputs(after) if line in opening_lines}  # CEX-27, CEX-28
+    found |= {(line, rule) for line, rule in ex.check_outputs(after) if line in opening_lines}  # CEX-27, CEX-28, CEX-30
     found = sorted(found)
     out = json.dumps({"systemMessage": message}) if message else ""
     if found:
