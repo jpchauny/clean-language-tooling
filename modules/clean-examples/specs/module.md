@@ -12,9 +12,10 @@ The Clean examples of the specs are how Clean is defined. In layer 2 the
 grammar is derived from them, and the semantics, derived from the prose of the
 specs, is checked against them, the expected output of an example included; the
 acceptance tests of layer 3 check the compiler, built in layer 4, against them.
-So every example states, on its opening line, whether its code is valid or which
-error it must give, a valid example may state what it prints, and every example
-is a whole program, of one file or of several, that nothing outside it completes.
+So all Clean code is in Clean examples, every example states,
+on its opening line, whether its code is valid or which error it must give, every
+example states what it prints, and every example is a whole program,
+of one file or of several, that nothing outside it completes.
 The meta rules below hold in the repositories
 of layers 0 and 1 of the project ([CLN-1](../../../specs/app.md#rules)).
 
@@ -42,6 +43,7 @@ of layers 0 and 1 of the project ([CLN-1](../../../specs/app.md#rules)).
 | Path of a file line | The text of a file line after its first 9 characters, when they are `// file: `. A file line that does not start with `// file: ` has no path. |
 | File of a program | A part of the code of a Clean example, found from its file lines alone (CEX-35): the lines from a file line up to the line before the next file line, or up to the last line of the code. A code with no file line has one file: the whole code. The lines before the first file line belong to no file. |
 | Program | The files of the code of a Clean example, together, in their order. A program of several files holds two or more file lines. |
+| Clean code | Any part of a program written in Clean: a literal, an expression, a statement, a declaration. One word in the prose, such as `start:` or `integer`, is not Clean code. |
 | Whole program | Clean code that, read alone, declares every name that it uses, except a name that a norm of the language, or a library that a spec of the project specifies, defines. |
 | Stub | A fake declaration: a function, a class, a value or any other name that an example declares in place of a name that it takes as defined outside its program, by a norm, a library or another spec, with a body, a value or a shape that no spec states. A declaration that is a real part of the program that the example shows is no stub. Illustrative: a function `integer tax(integer amount)` that returns 0 only so that an example of invoices builds is a stub; a variable set from a literal that the program then uses, or a function with its real body that the program defines and calls, is no stub. |
 | Focus comment | A comment of the code that sets apart the lines that an example is about from the lines that only complete its program. Illustrative: `// focus`, `// --- the example starts here ---`. |
@@ -54,9 +56,9 @@ of layers 0 and 1 of the project ([CLN-1](../../../specs/app.md#rules)).
 
 ## Where Clean code is written
 
-- **CEX-1.** Every whole program that a spec file shows is written in one Clean example, all its files in it. A code span (CommonMark 6.1) never holds a whole program.
+- **CEX-1.** All Clean code goes in Clean examples, each one a whole program. Never in another block, `text` included, nor in a code span.
 - **CEX-2.** A fenced block whose info string is `clean`, or starts with `clean` followed by a space, is a violation at its opening line: it is the form that `clean-language` replaces.
-- **CEX-3.** Clean text that a spec file shows as a part of a program, and not as a whole program, is written in a fenced block whose info string is `text`, and is no Clean example. Illustrative: a list of literals; a signature alone; a part of a program that the prose around it explains. A Clean example whose code is not yet a whole program is no such text: it stays a Clean example, is completed as CEX-33 says, and is never rewritten as a `text` block to get past CEX-31. Rationale: an example that a spec gives as a program checks the language in layer 2 and in layer 3; rewriting it as text would drop that check without a word.
+- **CEX-3.** A part of a program, such as a list of literals or a signature, is shown inside a whole program. Rationale: the specs define Clean, they do not teach it; code outside a Clean example is checked by nothing.
 
 ## The opening line
 
@@ -130,14 +132,14 @@ start:
 
 ## The expected output
 
-An expected output block states what a valid example prints, so that layer 2
-can check the semantics against it. These meta rules say where it goes and what its
+An expected output block states what an example prints, so that layer 2 can
+check the semantics against it and layer 3 can write its acceptance tests from it. These meta rules say where it goes and what its
 code means.
 
-- **CEX-27.** An expected output block is written right after a Clean example with `expect=valid`: the fenced block just before it is that Clean example, and only blank lines, or none, stand between the closing fence of the example and the opening line of the block. Any other expected output block is a violation at its opening line. The other cases (complete list): no fenced block comes before it; a line that is not blank stands between the two; the fenced block before it is not a Clean example; the Clean example before it has another `expect`. An expected output block is not a Clean example, so a second expected output block after the same example is a violation, and a Clean example has at most one. Rationale: the block names no example, so its place is what ties it to one; a block after an example that fails states an output that no meta rule checks, and a second block would state a second output for the same run.
+- **CEX-27.** Every Clean example is followed by its expected output block, with only blank lines between them. A Clean example without one, an expected output block anywhere else, and a second block after the same example are each a violation at its opening line.
 - **CEX-28.** The info string of an expected output block is exactly `clean-language-output`. Any other is a violation at its opening line. Rationale: a block such as `clean-language-output text` would look like an expected output and be read as none.
-- **CEX-29.** The code of an expected output block, each of its lines followed by one line feed (U+000A), in order, is the whole standard output of the program of its Clean example, byte for byte, in UTF-8. It is the content of the block as CommonMark 0.31.2, section 4.5, gives it, adopted whole. A block with no line states that the program writes nothing. In a program of several files, it is the output of the whole program, not of one file. Rationale: an output that a comment or a reader rounds off cannot check a semantics; byte for byte, it can. Accepted cost: a standard output whose last byte is not a line feed cannot be stated, and its example states no expected output.
-- **CEX-30.** A Clean example with `expect=valid` and no expected output block states nothing about its output. A comment `// prints:` (CEX-8) is no expected output, and nothing compares the output with it. Rationale: one place states the output that is checked, and a comment written for a reader is never taken for it.
+- **CEX-29.** The expected output block holds, byte for byte, all that the program prints and, when the program ends in an error, the exact error message after it. A syntax error stops the program before it runs: its block holds only the error message. In a program of several files, it is the output of the whole program.
+- **CEX-30.** Every program prints something with `print`, so its block is never empty, and nothing that it prints changes from one run to another. A comment `// prints:` (CEX-8) is no expected output. Rationale: the acceptance tests of layer 3 are written from these blocks.
 
 ## Error codes
 
@@ -150,7 +152,7 @@ code means.
 
 ## What is checked, and by whom
 
-- **CEX-20.** The meta rules that the text decides alone are checked by the audit and by the hook (complete list): CEX-2, CEX-4, CEX-6 except its first sentence, CEX-7 except its first sentence, CEX-9, CEX-10, CEX-11, CEX-13, CEX-15 to CEX-18, CEX-27, CEX-28, CEX-36 to CEX-39. Each of them splits the code into files as CEX-35 says. The audit also checks CEX-1 by its fuzzy search ([CAU-6](../use-cases/audit/specs/audit.md#run-the-audit)). Of CEX-31 the text alone decides no part, and the audit and the hook check none of it.
+- **CEX-20.** The meta rules that the text decides alone are checked by the audit and by the hook (complete list): CEX-2, CEX-4, CEX-6 except its first sentence, CEX-7 except its first sentence, CEX-9, CEX-10, CEX-11, CEX-13, CEX-15 to CEX-18, CEX-27, CEX-28, CEX-36 to CEX-39. Each of them splits the code into files as CEX-35 says. The audit also checks CEX-1 and CEX-3 by its fuzzy search ([CAU-6](../use-cases/audit/specs/audit.md#run-the-audit)). Of CEX-31 the text alone decides no part, and the audit and the hook check none of it.
 - **CEX-21.** The meta rules that need a Clean compiler are checked by no meta use case or hook of this meta module (complete list): CEX-5, the first sentence of CEX-6, the first sentence of CEX-7, CEX-12, CEX-29, CEX-31. They bind the author of each example. The derived norms of layer 2 check them in part ([CDN-4](../../clean-derived-norms/specs/module.md#rules)): the grammar checks the syntax part of CEX-5, CEX-6 and CEX-7; the semantics checks the rest of CEX-5 and of CEX-7, CEX-29, and CEX-31. The acceptance tests of layer 3, run against the compiler built in layer 4, check all of them, CEX-12 included. CEX-19, CEX-32, CEX-33 and CEX-34 bind the author, and nothing checks them; a program that CEX-32 forbids shows up through CEX-31, as a name it does not declare.
 
 ## The hook
